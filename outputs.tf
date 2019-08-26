@@ -4,16 +4,16 @@ output "name" {
 }
 
 output "hostname" {
-  value       = aws_alb.main.dns_name
+  value       = aws_alb.default.dns_name
   description = "Hostname of the Application Loadbalancer"
 }
 
 output "security_group_id" {
-  value       = aws_security_group.ecs_tasks.id
-  description = "Security group id of the ECS task"
+  value       = aws_security_group.ecs.id
+  description = "Security group ID of the ECS task"
 }
 
 output "task_execution_role_arn" {
-  value       = module.ecs_task_execution_role.arn
+  value       = module.task_execution_role.arn
   description = "ARN of the execution role"
 }
