@@ -1,48 +1,42 @@
-resource "aws_alb" "main" {
+resource "aws_security_group" "alb" {
+  name        = "${var.name}-alb"
+  description = "Controls access to the ALB"
+  vpc_id      = var.vpc_id
+
+  ingress {
+    protocol    = "tcp"
+    from_port   = 80
+    to_port     = 80
+    cidr_blocks = var.cidr_blocks
+  }
+
+  ingress {
+    protocol    = "tcp"
+    from_port   = 443
+    to_port     = 443
+    cidr_blocks = var.cidr_blocks
+  }
+
+  egress {
+    protocol    = "-1"
+    from_port   = 0
+    to_port     = 0
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_alb" "default" {
   name            = var.name
   subnets         = var.public_subnet_ids
-  security_groups = [aws_security_group.lb.id]
+  security_groups = [aws_security_group.alb.id]
 
   timeouts {
-    create = "20m" # Default is 10m
+    create = "20m"
   }
 }
 
-resource "aws_alb_target_group" "app" {
-  name        = var.name
-  port        = 80
-  protocol    = "HTTP"
-  vpc_id      = var.vpc_id
-  target_type = "ip"
-
-  health_check {
-    healthy_threshold   = "3"
-    interval            = "30"
-    protocol            = "HTTP"
-    matcher             = "200"
-    timeout             = "3"
-    path                = var.health_check_path
-    unhealthy_threshold = "2"
-  }
-}
-
-# Redirect all traffic from the ALB to the target group
-resource "aws_alb_listener" "front_end_https" {
-  load_balancer_arn = aws_alb.main.id
-  port              = 443
-  protocol          = "HTTPS"
-  ssl_policy        = var.ssl_policy
-  certificate_arn   = var.certificate_arn
-
-
-  default_action {
-    target_group_arn = aws_alb_target_group.app.id
-    type             = "forward"
-  }
-}
-
-resource "aws_alb_listener" "front_end_http" {
-  load_balancer_arn = aws_alb.main.id
+resource "aws_alb_listener" "http" {
+  load_balancer_arn = aws_alb.default.id
   port              = 80
   protocol          = "HTTP"
 
@@ -50,9 +44,41 @@ resource "aws_alb_listener" "front_end_http" {
     type = "redirect"
 
     redirect {
-      port = "443"
-      protocol = "HTTPS"
+      port        = 443
+      protocol    = "HTTPS"
       status_code = "HTTP_301"
     }
+  }
+}
+
+resource "aws_alb_target_group" "default" {
+  name        = var.name
+  port        = 80
+  protocol    = "HTTP"
+  target_type = "ip"
+  vpc_id      = var.vpc_id
+
+  health_check {
+    interval            = 30
+    timeout             = 3
+    path                = var.health_check_path
+    protocol            = "HTTP"
+    healthy_threshold   = 3
+    unhealthy_threshold = 2
+    matcher             = 200
+  }
+}
+
+resource "aws_alb_listener" "https" {
+  load_balancer_arn = aws_alb.default.id
+  port              = 443
+  protocol          = "HTTPS"
+  ssl_policy        = var.ssl_policy
+  certificate_arn   = var.certificate_arn
+
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_alb_target_group.default.id
   }
 }
