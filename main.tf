@@ -6,7 +6,7 @@ data "aws_region" "current" {}
 
 module "task_execution_role" {
   source                = "github.com/schubergphilis/terraform-aws-mcaf-role?ref=v0.1.3"
-  name                  = var.name
+  name                  = "TaskExecutionRole-${var.name}"
   principal_type        = "Service"
   principal_identifiers = ["ecs-tasks.amazonaws.com"]
   role_policy           = var.role_policy
