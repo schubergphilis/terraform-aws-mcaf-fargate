@@ -102,4 +102,6 @@ resource "aws_ecs_service" "default" {
     container_name   = "app-${var.name}"
     container_port   = var.port
   }
+
+  depends_on = [aws_alb_listener.https]
 }
