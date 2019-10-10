@@ -57,12 +57,14 @@ resource "aws_ecs_task_definition" "default" {
   cpu                      = var.cpu
   memory                   = var.memory
   container_definitions    = data.template_file.definition.rendered
+  tags                     = var.tags
 }
 
 resource "aws_security_group" "ecs" {
   name        = "${var.name}-ecs"
   description = "Allow inbound access from the ALB only"
   vpc_id      = var.vpc_id
+  tags        = var.tags
 
   ingress {
     protocol        = "tcp"
@@ -90,11 +92,12 @@ resource "aws_ecs_service" "default" {
   task_definition = aws_ecs_task_definition.default.arn
   desired_count   = var.desired_count
   launch_type     = "FARGATE"
+  tags            = var.tags
 
   network_configuration {
     security_groups  = [aws_security_group.ecs.id]
     subnets          = var.private_subnet_ids
-    assign_public_ip = true
+    assign_public_ip = var.public_ip
   }
 
   load_balancer {

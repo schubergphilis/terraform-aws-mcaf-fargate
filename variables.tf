@@ -72,6 +72,11 @@ variable "private_subnet_ids" {
   description = "List of subnet IDs assigned to ESC cluster"
 }
 
+variable "public_ip" {
+  type        = bool
+  description = "Assign a public ip to the service"
+}
+
 variable "ssl_policy" {
   type        = string
   default     = "ELBSecurityPolicy-TLS-1-2-Ext-2018-06"
