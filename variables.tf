@@ -74,6 +74,7 @@ variable "private_subnet_ids" {
 
 variable "public_ip" {
   type        = bool
+  default     = false
   description = "Assign a public ip to the service"
 }
 
