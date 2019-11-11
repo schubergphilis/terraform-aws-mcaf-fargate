@@ -29,6 +29,7 @@ resource "aws_alb" "default" {
   name            = var.name
   subnets         = var.public_subnet_ids
   security_groups = [aws_security_group.alb.id]
+  tags            = var.tags
 
   timeouts {
     create = "20m"
@@ -57,6 +58,7 @@ resource "aws_alb_target_group" "default" {
   protocol    = "HTTP"
   target_type = "ip"
   vpc_id      = var.vpc_id
+  tags        = var.tags
 
   health_check {
     interval            = 30
