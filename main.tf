@@ -92,9 +92,6 @@ resource "aws_ecs_service" "default" {
   task_definition = aws_ecs_task_definition.default.arn
   desired_count   = var.desired_count
   launch_type     = "FARGATE"
-  # https://aws.amazon.com/about-aws/whats-new/2018/11/amazon-ecs-and-aws-fargate-now-allow-resources-tagging-/
-  # Tags are not supported (yet)
-  # tags            = var.tags
 
   network_configuration {
     security_groups  = [aws_security_group.ecs.id]
