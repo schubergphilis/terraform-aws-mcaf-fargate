@@ -3,6 +3,11 @@ output "name" {
   description = "Name of the fargate deployment"
 }
 
+output "fqdn" {
+  value       = aws_route53_record.fargate.fqdn
+  description = "FQDN of the route53 endpoint"
+}
+
 output "hostname" {
   value       = aws_alb.default.dns_name
   description = "Hostname of the Application Loadbalancer"

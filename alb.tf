@@ -45,6 +45,7 @@ resource "aws_alb_listener" "http" {
     type = "redirect"
 
     redirect {
+      host        = local.application_fqdn
       port        = 443
       protocol    = "HTTPS"
       status_code = "HTTP_301"
@@ -76,8 +77,7 @@ resource "aws_alb_listener" "https" {
   port              = 443
   protocol          = "HTTPS"
   ssl_policy        = var.ssl_policy
-  certificate_arn   = var.certificate_arn
-
+  certificate_arn   = aws_acm_certificate.fargate.arn
 
   default_action {
     type             = "forward"

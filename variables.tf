@@ -84,15 +84,20 @@ variable "ssl_policy" {
   description = "SSL Policy for the ALB Listener"
 }
 
-variable "certificate_arn" {
-  type        = string
-  description = "Certificate ARN for the ALB Listener"
-}
-
 variable "health_check_path" {
   type        = string
   default     = "/"
   description = "Path used to check the health of the container"
+}
+
+variable "subdomain" {
+  type        = string
+  description = "The DNS subdomain for the ALB"
+}
+
+variable "zone_id" {
+  type        = string
+  description = "ID of the Route53 zone in which to create the subdomain record for the ALB"
 }
 
 variable "tags" {
