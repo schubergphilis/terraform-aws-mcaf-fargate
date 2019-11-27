@@ -9,6 +9,12 @@ variable "cidr_blocks" {
   description = "CIDR block to allow access to the ALB"
 }
 
+variable "certificate_arn" {
+  type        = string
+  default     = null
+  description = "Certificate ARN for the ALB Listener"
+}
+
 variable "cpu" {
   type        = number
   default     = 1024
@@ -64,6 +70,7 @@ variable "public_ip" {
 
 variable "public_subnet_ids" {
   type        = list(string)
+  default     = null
   description = "List of subnet IDs assigned to the ALB"
 }
 
@@ -85,18 +92,17 @@ variable "ssl_policy" {
 }
 
 variable "subdomain" {
-  type        = string
-  description = "The DNS subdomain for the ALB"
+  type = object({
+    name    = string,
+    zone_id = string
+  })
+  default     = null
+  description = "The DNS subdomain and zone ID for the ALB"
 }
 
 variable "vpc_id" {
   type        = string
   description = "AWS vpc id"
-}
-
-variable "zone_id" {
-  type        = string
-  description = "ID of the Route53 zone in which to create the subdomain record for the ALB"
 }
 
 variable "tags" {
