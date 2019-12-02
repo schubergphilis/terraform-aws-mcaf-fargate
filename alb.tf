@@ -1,4 +1,5 @@
 locals {
+  alb_hostname = local.load_balancer != null ? aws_alb.default[0].dns_name : null
   load_balancer_count = local.load_balancer != null ? 1 : 0
 }
 

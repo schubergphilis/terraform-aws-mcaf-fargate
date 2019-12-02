@@ -1,5 +1,5 @@
 locals {
-  load_balancer = var.public_subnet_ids != null ? { create : true } : null
+  load_balancer = var.public_subnet_ids != null ? { create : true } : {}
   region        = var.region != null ? var.region : data.aws_region.current.name
 }
 
@@ -74,7 +74,7 @@ resource "aws_security_group" "ecs" {
       protocol        = "tcp"
       from_port       = var.port
       to_port         = var.port
-      security_groups = [aws_security_group.alb.id]
+      security_groups = [aws_security_group.alb.0.id]
     }
   }
 
@@ -108,7 +108,7 @@ resource "aws_ecs_service" "default" {
     for_each = local.load_balancer
 
     content {
-      target_group_arn = aws_alb_target_group.default.id
+      target_group_arn = aws_alb_target_group.default.0.id
       container_name   = "app-${var.name}"
       container_port   = var.port
     }
