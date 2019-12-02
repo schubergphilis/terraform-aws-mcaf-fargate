@@ -1,5 +1,6 @@
 locals {
-  region = var.region != null ? var.region : data.aws_region.current.name
+  load_balancer = var.public_subnet_ids != null ? { create : true } : {}
+  region        = var.region != null ? var.region : data.aws_region.current.name
 }
 
 data "aws_region" "current" {}
@@ -62,15 +63,19 @@ resource "aws_ecs_task_definition" "default" {
 
 resource "aws_security_group" "ecs" {
   name        = "${var.name}-ecs"
-  description = "Allow inbound access from the ALB only"
+  description = "Allow access to and from the ECS cluster"
   vpc_id      = var.vpc_id
   tags        = var.tags
 
-  ingress {
-    protocol        = "tcp"
-    from_port       = var.port
-    to_port         = var.port
-    security_groups = [aws_security_group.alb.id]
+  dynamic ingress {
+    for_each = local.load_balancer
+
+    content {
+      protocol        = "tcp"
+      from_port       = var.port
+      to_port         = var.port
+      security_groups = [aws_security_group.alb.0.id]
+    }
   }
 
   egress {
@@ -99,10 +104,14 @@ resource "aws_ecs_service" "default" {
     assign_public_ip = var.public_ip
   }
 
-  load_balancer {
-    target_group_arn = aws_alb_target_group.default.id
-    container_name   = "app-${var.name}"
-    container_port   = var.port
+  dynamic load_balancer {
+    for_each = local.load_balancer
+
+    content {
+      target_group_arn = aws_alb_target_group.default.0.id
+      container_name   = "app-${var.name}"
+      container_port   = var.port
+    }
   }
 
   depends_on = [aws_alb_listener.https]

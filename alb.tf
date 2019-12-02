@@ -1,4 +1,10 @@
+locals {
+  alb_hostname = local.load_balancer != null ? aws_alb.default[0].dns_name : null
+  load_balancer_count = local.load_balancer != null ? 1 : 0
+}
+
 resource "aws_security_group" "alb" {
+  count       = local.load_balancer_count
   name        = "${var.name}-alb"
   description = "Controls access to the ALB"
   vpc_id      = var.vpc_id
@@ -26,9 +32,10 @@ resource "aws_security_group" "alb" {
 }
 
 resource "aws_alb" "default" {
+  count           = local.load_balancer_count
   name            = var.name
   subnets         = var.public_subnet_ids
-  security_groups = [aws_security_group.alb.id]
+  security_groups = [aws_security_group.alb[0].id]
   tags            = var.tags
 
   timeouts {
@@ -37,7 +44,8 @@ resource "aws_alb" "default" {
 }
 
 resource "aws_alb_listener" "http" {
-  load_balancer_arn = aws_alb.default.id
+  count             = local.load_balancer_count
+  load_balancer_arn = aws_alb.default[0].id
   port              = 80
   protocol          = "HTTP"
 
@@ -45,6 +53,7 @@ resource "aws_alb_listener" "http" {
     type = "redirect"
 
     redirect {
+      host        = local.application_fqdn
       port        = 443
       protocol    = "HTTPS"
       status_code = "HTTP_301"
@@ -53,6 +62,7 @@ resource "aws_alb_listener" "http" {
 }
 
 resource "aws_alb_target_group" "default" {
+  count       = local.load_balancer_count
   name        = var.name
   port        = 80
   protocol    = "HTTP"
@@ -72,15 +82,15 @@ resource "aws_alb_target_group" "default" {
 }
 
 resource "aws_alb_listener" "https" {
-  load_balancer_arn = aws_alb.default.id
+  count             = local.load_balancer_count
+  load_balancer_arn = aws_alb.default[0].id
   port              = 443
   protocol          = "HTTPS"
   ssl_policy        = var.ssl_policy
-  certificate_arn   = var.certificate_arn
-
+  certificate_arn   = local.certificate_arn
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_alb_target_group.default.id
+    target_group_arn = aws_alb_target_group.default[0].id
   }
 }
