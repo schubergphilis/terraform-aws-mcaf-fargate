@@ -3,7 +3,7 @@ locals {
     "${var.subdomain.name}.${data.aws_route53_zone.current[0].name}", "/[.]$/", "",
   ) : null
 
-  certificate_arn   = var.certificate_arn != null ? var.certificate_arn : aws_acm_certificate.default.0.arn
+  certificate_arn   = var.certificate_arn != null ? var.certificate_arn : aws_acm_certificate.default[0].arn
   certificate_count = var.certificate_arn == null && var.subdomain != null ? local.load_balancer_count : 0
 }
 
@@ -42,7 +42,7 @@ resource "aws_route53_record" "cert_validation" {
 }
 
 resource "aws_acm_certificate_validation" "default" {
-  count                   = var.certificate_arn == null ? local.load_balancer_count : 0
+  count                   = local.certificate_count
   certificate_arn         = local.certificate_arn
-  validation_record_fqdns = [local.application_fqdn]
+  validation_record_fqdns = [aws_route53_record.cert_validation[0].fqdn]
 }
