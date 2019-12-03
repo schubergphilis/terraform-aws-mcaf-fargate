@@ -42,7 +42,7 @@ resource "aws_route53_record" "cert_validation" {
 }
 
 resource "aws_acm_certificate_validation" "default" {
-  count                   = var.certificate_arn == null ? local.load_balancer_count : 0
+  count                   = local.certificate_count
   certificate_arn         = local.certificate_arn
-  validation_record_fqdns = [local.application_fqdn]
+  validation_record_fqdns = [aws_route53_record.cert_validation.fqdn]
 }
