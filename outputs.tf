@@ -14,12 +14,12 @@ output "hostname" {
 }
 
 output "http_listener_arn" {
-  value       = aws_alb_listener.http.arn
+  value       = local.http_listener_arn
   description = "The ARN of the HTTP listener"
 }
 
 output "https_listener_arn" {
-  value       = aws_alb_listener.https.arn
+  value       = local.https_listener_arn
   description = "The ARN of the HTTPS listener"
 }
 
@@ -29,7 +29,7 @@ output "security_group_id" {
 }
 
 output "target_group_arn" {
-  value       = aws_alb_target_group.default.arn
+  value       = local.target_group_arn
   description = "The ARN of the Target Group"
 }
 

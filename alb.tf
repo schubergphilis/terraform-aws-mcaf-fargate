@@ -1,5 +1,8 @@
 locals {
-  alb_hostname = local.load_balancer != null ? aws_alb.default[0].dns_name : null
+  alb_hostname        = local.load_balancer != null ? aws_alb.default[0].dns_name : null
+  http_listener_arn   = local.load_balancer != null ? aws_alb_listener.http[0].arn : null
+  https_listener_arn  = local.load_balancer != null ? aws_alb_listener.https[0].arn : null
+  target_group_arn    = local.load_balancer != null ? aws_alb_target_group.default[0].arn : null
   load_balancer_count = local.load_balancer != null ? 1 : 0
 }
 
