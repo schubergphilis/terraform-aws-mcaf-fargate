@@ -33,6 +33,12 @@ variable "environment" {
   description = "Environment variables defined in the docker container"
 }
 
+variable "secrets" {
+  type        = map
+  default     = {}
+  description = "An object representing the secret to expose to the docker container"
+}
+
 variable "health_check_path" {
   type        = string
   default     = "/"
