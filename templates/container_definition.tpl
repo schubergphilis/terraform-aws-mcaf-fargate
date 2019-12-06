@@ -6,6 +6,7 @@
     "memory": ${memory},
     "networkMode": "awsvpc",
     "environment": ${environment},
+    "secrets": ${secrets},
     "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
