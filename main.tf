@@ -34,6 +34,15 @@ data "null_data_source" "environment" {
   }
 }
 
+data "null_data_source" "secrets" {
+  count = length(var.secrets)
+
+  inputs = {
+    name      = "${element(keys(var.secrets), count.index)}"
+    valueFrom = "${element(values(var.secrets), count.index)}"
+  }
+}
+
 data "template_file" "definition" {
   template = file("${path.module}/templates/container_definition.tpl")
 
@@ -45,6 +54,7 @@ data "template_file" "definition" {
     memory      = var.memory
     log_group   = aws_cloudwatch_log_group.default.name
     environment = jsonencode(data.null_data_source.environment.*.outputs)
+    secrets     = jsonencode(data.null_data_source.secrets.*.outputs)
     region      = local.region
   }
 }
