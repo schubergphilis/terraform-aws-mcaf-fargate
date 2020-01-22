@@ -1,7 +1,8 @@
 locals {
   alb_hostname        = local.load_balancer != null ? aws_alb.default[0].dns_name : null
-  http_listener_arn   = local.load_balancer != null ? aws_alb_listener.http[0].arn : null
-  https_listener_arn  = local.load_balancer != null ? aws_alb_listener.https[0].arn : null
+  http_listener_arn   = local.load_balancer != null && var.protocol != "TCP" ? aws_alb_listener.http[0].arn : null
+  https_listener_arn  = local.load_balancer != null && var.protocol != "TCP" ? aws_alb_listener.https[0].arn : null
+  tcp_listener_arn    = local.load_balancer != null && var.protocol == "TCP" ? aws_alb_listener.tcp[0].arn : null
   target_group_arn    = local.load_balancer != null ? aws_alb_target_group.default[0].arn : null
   load_balancer_count = local.load_balancer != null ? 1 : 0
 }
@@ -47,7 +48,7 @@ resource "aws_alb" "default" {
 }
 
 resource "aws_alb_listener" "http" {
-  count             = local.load_balancer_count
+  count             = var.protocol == "TCP" ? 0 : local.load_balancer_count
   load_balancer_arn = aws_alb.default[0].id
   port              = 80
   protocol          = "HTTP"
@@ -80,22 +81,34 @@ resource "aws_alb_target_group" "default" {
 
   health_check {
     interval            = 30
-    timeout             = 3
+    timeout             = var.protocol != "TCP" ? 3 : null
     protocol            = var.protocol
     path                = var.protocol != "TCP" ? var.health_check_path : null
-    healthy_threshold   = 3
-    unhealthy_threshold = 2
     matcher             = var.protocol != "TCP" ? 200 : null
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
   }
 }
 
 resource "aws_alb_listener" "https" {
-  count             = local.load_balancer_count
+  count             = var.protocol == "TCP" ? 0 : local.load_balancer_count
   load_balancer_arn = aws_alb.default[0].id
   port              = 443
   protocol          = "HTTPS"
   ssl_policy        = var.ssl_policy
   certificate_arn   = local.certificate_arn
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_alb_target_group.default[0].id
+  }
+}
+
+resource "aws_alb_listener" "tcp" {
+  count             = var.protocol == "TCP" ? 1 : 0
+  load_balancer_arn = aws_alb.default[0].id
+  port              = var.port
+  protocol          = "TCP"
 
   default_action {
     type             = "forward"

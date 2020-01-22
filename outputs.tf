@@ -23,6 +23,11 @@ output "https_listener_arn" {
   description = "The ARN of the HTTPS listener"
 }
 
+output "tcp_listener_arn" {
+  value       = local.tcp_listener_arn
+  description = "The ARN of the TCP listener"
+}
+
 output "security_group_id" {
   value       = aws_security_group.ecs.id
   description = "Security group ID of the ECS task"
