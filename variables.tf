@@ -6,13 +6,13 @@ variable "name" {
 variable "cidr_blocks" {
   type        = list(string)
   default     = ["0.0.0.0/0"]
-  description = "CIDR block to allow access to the ALB"
+  description = "CIDR block to allow access to the LB"
 }
 
 variable "certificate_arn" {
   type        = string
   default     = null
-  description = "Certificate ARN for the ALB Listener"
+  description = "Certificate ARN for the LB Listener"
 }
 
 variable "cpu" {
@@ -83,7 +83,7 @@ variable "public_ip" {
 variable "public_subnet_ids" {
   type        = list(string)
   default     = null
-  description = "List of subnet IDs assigned to the ALB"
+  description = "List of subnet IDs assigned to the LB"
 }
 
 variable "region" {
@@ -100,7 +100,7 @@ variable "role_policy" {
 variable "ssl_policy" {
   type        = string
   default     = "ELBSecurityPolicy-TLS-1-2-Ext-2018-06"
-  description = "SSL Policy for the ALB Listener"
+  description = "SSL Policy for the LB Listener"
 }
 
 variable "subdomain" {
@@ -109,7 +109,7 @@ variable "subdomain" {
     zone_id = string
   })
   default     = null
-  description = "The DNS subdomain and zone ID for the ALB"
+  description = "The DNS subdomain and zone ID for the LB"
 }
 
 variable "vpc_id" {

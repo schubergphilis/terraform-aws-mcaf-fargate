@@ -18,7 +18,7 @@ resource "aws_route53_record" "default" {
   name    = local.application_fqdn
   type    = "CNAME"
   ttl     = "5"
-  records = [aws_alb.default[0].dns_name]
+  records = [aws_lb.default[0].dns_name]
 }
 
 resource "aws_acm_certificate" "default" {

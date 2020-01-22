@@ -1,16 +1,16 @@
 locals {
-  alb_hostname        = local.load_balancer != null ? aws_alb.default[0].dns_name : null
-  http_listener_arn   = local.load_balancer != null && var.protocol != "TCP" ? aws_alb_listener.http[0].arn : null
-  https_listener_arn  = local.load_balancer != null && var.protocol != "TCP" ? aws_alb_listener.https[0].arn : null
-  tcp_listener_arn    = local.load_balancer != null && var.protocol == "TCP" ? aws_alb_listener.tcp[0].arn : null
-  target_group_arn    = local.load_balancer != null ? aws_alb_target_group.default[0].arn : null
+  lb_hostname         = local.load_balancer != null ? aws_lb.default[0].dns_name : null
+  http_listener_arn   = local.load_balancer != null && var.protocol != "TCP" ? aws_lb_listener.http[0].arn : null
+  https_listener_arn  = local.load_balancer != null && var.protocol != "TCP" ? aws_lb_listener.https[0].arn : null
+  tcp_listener_arn    = local.load_balancer != null && var.protocol == "TCP" ? aws_lb_listener.tcp[0].arn : null
+  target_group_arn    = local.load_balancer != null ? aws_lb_target_group.default[0].arn : null
   load_balancer_count = local.load_balancer != null ? 1 : 0
 }
 
-resource "aws_security_group" "alb" {
+resource "aws_security_group" "lb" {
   count       = local.load_balancer_count
-  name        = "${var.name}-alb"
-  description = "Controls access to the ALB"
+  name        = "${var.name}-lb"
+  description = "Controls access to the LB"
   vpc_id      = var.vpc_id
 
   ingress {
@@ -35,21 +35,22 @@ resource "aws_security_group" "alb" {
   }
 }
 
-resource "aws_alb" "default" {
-  count           = local.load_balancer_count
-  name            = var.name
-  subnets         = var.public_subnet_ids
-  security_groups = [aws_security_group.alb[0].id]
-  tags            = var.tags
+resource "aws_lb" "default" {
+  count              = local.load_balancer_count
+  name               = var.name
+  load_balancer_type = var.protocol == "TCP" ? "network" : "application"
+  subnets            = var.public_subnet_ids
+  security_groups    = [aws_security_group.lb[0].id]
+  tags               = var.tags
 
   timeouts {
     create = "20m"
   }
 }
 
-resource "aws_alb_listener" "http" {
+resource "aws_lb_listener" "http" {
   count             = var.protocol == "TCP" ? 0 : local.load_balancer_count
-  load_balancer_arn = aws_alb.default[0].id
+  load_balancer_arn = aws_lb.default[0].id
   port              = 80
   protocol          = "HTTP"
 
@@ -65,7 +66,7 @@ resource "aws_alb_listener" "http" {
   }
 }
 
-resource "aws_alb_target_group" "default" {
+resource "aws_lb_target_group" "default" {
   count       = local.load_balancer_count
   name        = var.name
   port        = var.port
@@ -85,14 +86,14 @@ resource "aws_alb_target_group" "default" {
     protocol            = var.protocol
     path                = var.protocol != "TCP" ? var.health_check_path : null
     matcher             = var.protocol != "TCP" ? 200 : null
-    healthy_threshold   = 2
-    unhealthy_threshold = 2
+    healthy_threshold   = 3
+    unhealthy_threshold = 3
   }
 }
 
-resource "aws_alb_listener" "https" {
+resource "aws_lb_listener" "https" {
   count             = var.protocol == "TCP" ? 0 : local.load_balancer_count
-  load_balancer_arn = aws_alb.default[0].id
+  load_balancer_arn = aws_lb.default[0].id
   port              = 443
   protocol          = "HTTPS"
   ssl_policy        = var.ssl_policy
@@ -100,18 +101,18 @@ resource "aws_alb_listener" "https" {
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_alb_target_group.default[0].id
+    target_group_arn = aws_lb_target_group.default[0].id
   }
 }
 
-resource "aws_alb_listener" "tcp" {
+resource "aws_lb_listener" "tcp" {
   count             = var.protocol == "TCP" ? 1 : 0
-  load_balancer_arn = aws_alb.default[0].id
+  load_balancer_arn = aws_lb.default[0].id
   port              = var.port
   protocol          = "TCP"
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_alb_target_group.default[0].id
+    target_group_arn = aws_lb_target_group.default[0].id
   }
 }
