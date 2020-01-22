@@ -73,6 +73,11 @@ resource "aws_alb_target_group" "default" {
   vpc_id      = var.vpc_id
   tags        = var.tags
 
+  stickiness {
+    enabled = false
+    type    = "lb_cookie"
+  }
+
   health_check {
     interval            = 30
     timeout             = 3
