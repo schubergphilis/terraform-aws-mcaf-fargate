@@ -8,7 +8,7 @@ locals {
 }
 
 resource "aws_security_group" "lb" {
-  count       = local.load_balancer_count
+  count       = var.protocol != "TCP" ? local.load_balancer_count : 0
   name        = "${var.name}-lb"
   description = "Controls access to the LB"
   vpc_id      = var.vpc_id
@@ -40,7 +40,7 @@ resource "aws_lb" "default" {
   name               = var.name
   load_balancer_type = var.protocol == "TCP" ? "network" : "application"
   subnets            = var.public_subnet_ids
-  security_groups    = [aws_security_group.lb[0].id]
+  security_groups    = var.protocol != "TCP" ? [aws_security_group.lb[0].id] : null
   tags               = var.tags
 
   timeouts {
