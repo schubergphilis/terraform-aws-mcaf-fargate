@@ -78,13 +78,14 @@ resource "aws_security_group" "ecs" {
   tags        = var.tags
 
   dynamic ingress {
-    for_each = var.protocol != "TCP" ? local.load_balancer : {}
+    for_each = local.load_balancer
 
     content {
       protocol        = "tcp"
       from_port       = var.port
       to_port         = var.port
-      security_groups = [aws_security_group.lb.0.id]
+      security_groups = var.protocol != "TCP" ? [aws_security_group.lb.0.id] : null
+      cidr_blocks     = var.protocol == "TCP" ? var.cidr_blocks : null
     }
   }
 
