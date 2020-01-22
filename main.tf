@@ -78,7 +78,7 @@ resource "aws_security_group" "ecs" {
   tags        = var.tags
 
   dynamic ingress {
-    for_each = local.load_balancer
+    for_each = var.protocol != "TCP" ? local.load_balancer : {}
 
     content {
       protocol        = "tcp"
