@@ -85,7 +85,7 @@ resource "aws_alb_target_group" "default" {
     path                = var.protocol != "TCP" ? var.health_check_path : null
     healthy_threshold   = 3
     unhealthy_threshold = 2
-    matcher             = 200
+    matcher             = var.protocol != "TCP" ? 200 : null
   }
 }
 
