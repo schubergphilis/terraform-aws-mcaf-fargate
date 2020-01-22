@@ -127,6 +127,4 @@ resource "aws_ecs_service" "default" {
       container_port   = var.port
     }
   }
-
-  depends_on = [aws_lb_listener.https]
 }
