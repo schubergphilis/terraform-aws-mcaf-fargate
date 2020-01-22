@@ -67,8 +67,8 @@ resource "aws_alb_listener" "http" {
 resource "aws_alb_target_group" "default" {
   count       = local.load_balancer_count
   name        = var.name
-  port        = var.target_port
-  protocol    = var.target_protocol
+  port        = var.port
+  protocol    = var.protocol
   target_type = "ip"
   vpc_id      = var.vpc_id
   tags        = var.tags
@@ -76,8 +76,8 @@ resource "aws_alb_target_group" "default" {
   health_check {
     interval            = 30
     timeout             = 3
-    protocol            = var.target_protocol
-    path                = var.target_protocol != "TCP" ? var.health_check_path : null
+    protocol            = var.protocol
+    path                = var.protocol != "TCP" ? var.health_check_path : null
     healthy_threshold   = 3
     unhealthy_threshold = 2
     matcher             = 200
