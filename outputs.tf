@@ -9,7 +9,7 @@ output "fqdn" {
 }
 
 output "hostname" {
-  value       = local.alb_hostname
+  value       = local.lb_hostname
   description = "Hostname of the Application Loadbalancer"
 }
 

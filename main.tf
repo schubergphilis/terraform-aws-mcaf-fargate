@@ -84,7 +84,7 @@ resource "aws_security_group" "ecs" {
       protocol        = "tcp"
       from_port       = var.port
       to_port         = var.port
-      security_groups = [aws_security_group.alb.0.id]
+      security_groups = [aws_security_group.lb.0.id]
     }
   }
 
@@ -122,11 +122,11 @@ resource "aws_ecs_service" "default" {
     for_each = local.load_balancer
 
     content {
-      target_group_arn = aws_alb_target_group.default.0.id
+      target_group_arn = aws_lb_target_group.default.0.id
       container_name   = "app-${var.name}"
       container_port   = var.port
     }
   }
 
-  depends_on = [aws_alb_listener.https]
+  depends_on = [aws_lb_listener.https]
 }
