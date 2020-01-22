@@ -39,6 +39,18 @@ variable "secrets" {
   description = "An object representing the secret to expose to the docker container"
 }
 
+variable "target_port" {
+  type        = number
+  default     = 80
+  description = "The target port"
+}
+
+variable "target_protocol" {
+  type        = string
+  default     = "HTTP"
+  description = "The target protocol"
+}
+
 variable "health_check_path" {
   type        = string
   default     = "/"
