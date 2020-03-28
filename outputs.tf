@@ -38,6 +38,11 @@ output "target_group_arn" {
   description = "The ARN of the Target Group"
 }
 
+output "task_definition_arn" {
+  value       = aws_ecs_task_definition.default.arn
+  description = "ARN of the task definition"
+}
+
 output "task_execution_role_arn" {
   value       = module.task_execution_role.arn
   description = "ARN of the execution role"
