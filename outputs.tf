@@ -3,6 +3,11 @@ output "name" {
   description = "Name of the fargate deployment"
 }
 
+output "cluster_arn" {
+  value       = aws_ecs_cluster.default.arn
+  description = "The ARN of the ECS cluster"
+}
+
 output "fqdn" {
   value       = local.application_fqdn
   description = "FQDN of the route53 endpoint"
