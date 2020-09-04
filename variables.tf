@@ -41,7 +41,7 @@ variable "secrets" {
 
 variable "health" {
   type = object({
-    interval            = string,
+    interval            = number,
     path                = string,
     healthy_threshold   = number,
     unhealthy_threshold = number
