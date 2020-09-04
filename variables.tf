@@ -39,28 +39,15 @@ variable "secrets" {
   description = "An object representing the secret to expose to the docker container"
 }
 
-variable "health_check_interval" {
-  type        = string
-  default     = 30
-  description = "Interval used to check the health of the container"
-}
-
-variable "health_check_path" {
-  type        = string
-  default     = "/"
-  description = "Path used to check the health of the container"
-}
-
-variable "healthy_threshold" {
-  type        = string
-  default     = 3
-  description = "Number of consecutive health check successes"
-}
-
-variable "unhealthy_threshold" {
-  type        = string
-  default     = 3
-  description = "Number of consecutive health check failures"
+variable "health" {
+  type = object({
+    interval            = string,
+    path                = string,
+    healthy_threshold   = number,
+    unhealthy_threshold = number
+  })
+  default     = null
+  description = "Health check settings used to check the health of the container"
 }
 
 variable "image" {
