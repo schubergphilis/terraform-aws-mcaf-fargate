@@ -46,7 +46,7 @@ variable "health_check" {
     path                = string,
     unhealthy_threshold = number
   })
-  default     = {
+  default = {
     healthy_threshold   = 3,
     interval            = 30,
     path                = null,
