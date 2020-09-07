@@ -39,15 +39,15 @@ variable "secrets" {
   description = "An object representing the secret to expose to the docker container"
 }
 
-variable "health" {
+variable "health_check" {
   type = object({
+    healthy_threshold   = number,
     interval            = number,
     path                = string,
-    healthy_threshold   = number,
     unhealthy_threshold = number
   })
   default     = null
-  description = "Health check settings used to check the health of the container"
+  description = "Health check settings for the container"
 }
 
 variable "image" {
