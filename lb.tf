@@ -87,7 +87,7 @@ resource "aws_lb_target_group" "default" {
     interval            = var.health_check.interval
     timeout             = var.protocol != "TCP" ? 3 : null
     protocol            = var.protocol
-    path                = var.protocol != "TCP" ? (var.health_check.path) : null
+    path                = var.protocol != "TCP" ? var.health_check.path : null
     matcher             = var.protocol != "TCP" ? 200 : null
     healthy_threshold   = var.health_check.healthy_threshold
     unhealthy_threshold = var.health_check.unhealthy_threshold
