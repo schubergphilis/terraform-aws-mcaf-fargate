@@ -84,13 +84,13 @@ resource "aws_lb_target_group" "default" {
   }
 
   health_check {
-    interval            = var.health.interval
+    interval            = var.health_check != null ? var.health_check.interval : null
     timeout             = var.protocol != "TCP" ? 3 : null
     protocol            = var.protocol
-    path                = var.protocol != "TCP" ? var.health.path : null
+    path                = var.protocol != "TCP" ? (var.health_check != null ? var.health_check.path : null) : null
     matcher             = var.protocol != "TCP" ? 200 : null
-    healthy_threshold   = var.health.healthy_threshold
-    unhealthy_threshold = var.health.unhealthy_threshold
+    healthy_threshold   = var.health_check != null ? var.health_check.healthy_threshold : null
+    unhealthy_threshold = var.health_check != null ? var.health_check.unhealthy_threshold : null
   }
 }
 
