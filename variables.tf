@@ -46,7 +46,12 @@ variable "health_check" {
     path                = string,
     unhealthy_threshold = number
   })
-  default     = null
+  default     = {
+    healthy_threshold   = 3,
+    interval            = 30,
+    path                = null,
+    unhealthy_threshold = 3
+  }
   description = "Health check settings for the container"
 }
 
