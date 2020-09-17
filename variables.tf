@@ -39,10 +39,20 @@ variable "secrets" {
   description = "An object representing the secret to expose to the docker container"
 }
 
-variable "health_check_path" {
-  type        = string
-  default     = "/"
-  description = "Path used to check the health of the container"
+variable "health_check" {
+  type = object({
+    healthy_threshold   = number,
+    interval            = number,
+    path                = string,
+    unhealthy_threshold = number
+  })
+  default = {
+    healthy_threshold   = 3,
+    interval            = 30,
+    path                = null,
+    unhealthy_threshold = 3
+  }
+  description = "Health check settings for the container"
 }
 
 variable "image" {
