@@ -80,7 +80,7 @@ resource "aws_lb_target_group" "default" {
 
   stickiness {
     enabled = false
-    type    = "lb_cookie"
+    type    = "source_ip"
   }
 
   health_check {
