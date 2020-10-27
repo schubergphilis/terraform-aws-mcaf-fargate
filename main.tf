@@ -11,6 +11,7 @@ module "task_execution_role" {
   principal_type        = "Service"
   principal_identifiers = ["ecs-tasks.amazonaws.com"]
   role_policy           = var.role_policy
+  postfix               = var.postfix
   tags                  = var.tags
 }
 
