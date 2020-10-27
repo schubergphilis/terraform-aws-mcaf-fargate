@@ -73,6 +73,12 @@ variable "port" {
   description = "Port exposed by the docker image to redirect traffic to"
 }
 
+variable "postfix" {
+  type        = bool
+  default     = false
+  description = "Postfix the role and policy names with Role and Policy"
+}
+
 variable "protocol" {
   type        = string
   default     = "HTTP"
