@@ -29,8 +29,8 @@ data "null_data_source" "environment" {
   count = length(var.environment)
 
   inputs = {
-    name  = "${element(keys(var.environment), count.index)}"
-    value = "${element(values(var.environment), count.index)}"
+    name  = element(keys(var.environment), count.index)
+    value = element(values(var.environment), count.index)
   }
 }
 
@@ -38,8 +38,8 @@ data "null_data_source" "secrets" {
   count = length(var.secrets)
 
   inputs = {
-    name      = "${element(keys(var.secrets), count.index)}"
-    valueFrom = "${element(values(var.secrets), count.index)}"
+    name      = element(keys(var.secrets), count.index)
+    valueFrom = element(values(var.secrets), count.index)
   }
 }
 
