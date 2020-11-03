@@ -27,6 +27,11 @@ variable "desired_count" {
   description = "Desired number of docker containers to run"
 }
 
+variable "ecs_subnet_ids" {
+  type        = list(string)
+  description = "List of subnet IDs assigned to ESC cluster"
+}
+
 variable "environment" {
   type        = map
   default     = {}
@@ -67,6 +72,12 @@ variable "load_balancer_internal" {
   description = "Set to true to create an internal load balancer"
 }
 
+variable "load_balancer_subnet_ids" {
+  type        = list(string)
+  default     = null
+  description = "List of subnet IDs assigned to the LB"
+}
+
 variable "memory" {
   type        = number
   default     = 2048
@@ -91,21 +102,10 @@ variable "protocol" {
   description = "The target protocol"
 }
 
-variable "private_subnet_ids" {
-  type        = list(string)
-  description = "List of subnet IDs assigned to ESC cluster"
-}
-
 variable "public_ip" {
   type        = bool
   default     = false
   description = "Assign a public ip to the service"
-}
-
-variable "public_subnet_ids" {
-  type        = list(string)
-  default     = null
-  description = "List of subnet IDs assigned to the LB"
 }
 
 variable "region" {
