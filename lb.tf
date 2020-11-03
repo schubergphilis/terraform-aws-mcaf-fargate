@@ -41,6 +41,7 @@ resource "aws_security_group" "lb" {
 resource "aws_lb" "default" {
   count              = local.load_balancer_count
   name               = var.name
+  internal           = var.load_balancer_internal
   load_balancer_type = var.protocol == "TCP" ? "network" : "application"
   subnets            = var.public_subnet_ids
   security_groups    = var.protocol != "TCP" ? [aws_security_group.lb[0].id] : null

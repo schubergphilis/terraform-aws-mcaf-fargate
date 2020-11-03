@@ -61,6 +61,12 @@ variable "image" {
   description = "Docker image to run in the ECS cluster"
 }
 
+variable "load_balancer_internal" {
+  type        = bool
+  default     = false
+  description = "Set to true to create an internal load balancer"
+}
+
 variable "memory" {
   type        = number
   default     = 2048
