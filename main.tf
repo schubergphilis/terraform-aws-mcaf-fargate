@@ -44,10 +44,16 @@ data "null_data_source" "secrets" {
   }
 }
 
-data "template_file" "definition" {
-  template = file("${path.module}/templates/container_definition.tpl")
+resource "aws_ecs_task_definition" "default" {
+  family                   = var.name
+  execution_role_arn       = module.task_execution_role.arn
+  task_role_arn            = module.task_execution_role.arn
+  network_mode             = "awsvpc"
+  requires_compatibilities = ["FARGATE"]
+  cpu                      = var.cpu
+  memory                   = var.memory
 
-  vars = {
+  container_definitions = templatefile("${path.module}/templates/container_definition.tpl", {
     name        = var.name
     image       = var.image
     port        = var.port
@@ -57,19 +63,9 @@ data "template_file" "definition" {
     environment = jsonencode(data.null_data_source.environment.*.outputs)
     secrets     = jsonencode(data.null_data_source.secrets.*.outputs)
     region      = local.region
-  }
-}
+  })
 
-resource "aws_ecs_task_definition" "default" {
-  family                   = var.name
-  execution_role_arn       = module.task_execution_role.arn
-  task_role_arn            = module.task_execution_role.arn
-  network_mode             = "awsvpc"
-  requires_compatibilities = ["FARGATE"]
-  cpu                      = var.cpu
-  memory                   = var.memory
-  container_definitions    = data.template_file.definition.rendered
-  tags                     = var.tags
+  tags = var.tags
 }
 
 resource "aws_security_group" "ecs" {
