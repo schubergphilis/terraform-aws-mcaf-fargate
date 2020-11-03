@@ -29,7 +29,7 @@ variable "desired_count" {
 
 variable "ecs_subnet_ids" {
   type        = list(string)
-  description = "List of subnet IDs assigned to ESC cluster"
+  description = "List of subnet IDs assigned to ECS cluster"
 }
 
 variable "environment" {
