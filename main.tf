@@ -1,5 +1,5 @@
 locals {
-  load_balancer = var.public_subnet_ids != null ? { create : true } : {}
+  load_balancer = var.load_balancer_subnet_ids != null ? { create : true } : {}
   region        = var.region != null ? var.region : data.aws_region.current.name
 }
 
@@ -112,7 +112,7 @@ resource "aws_ecs_service" "default" {
 
   network_configuration {
     security_groups  = [aws_security_group.ecs.id]
-    subnets          = var.private_subnet_ids
+    subnets          = var.ecs_subnet_ids
     assign_public_ip = var.public_ip
   }
 
