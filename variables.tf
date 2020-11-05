@@ -95,11 +95,6 @@ variable "postfix" {
   description = "Postfix the role and policy names with Role and Policy"
 }
 
-variable "private_subnet_ids" {
-  type        = list(string)
-  description = "List of subnet IDs assigned to ESC cluster"
-}
-
 variable "protocol" {
   type        = string
   default     = "HTTP"
