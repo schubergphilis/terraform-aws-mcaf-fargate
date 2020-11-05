@@ -38,18 +38,6 @@ variable "environment" {
   description = "Environment variables defined in the docker container"
 }
 
-variable "loadbalancer_eip" {
-  type        = bool
-  default     = false
-  description = "Whethter to create Elastic IPs for the Loadbalancer"
-}
-
-variable "secrets" {
-  type        = map
-  default     = {}
-  description = "An object representing the secret to expose to the docker container"
-}
-
 variable "health_check" {
   type = object({
     healthy_threshold   = number,
@@ -70,6 +58,12 @@ variable "image" {
   type        = string
   default     = "nginx:latest"
   description = "Docker image to run in the ECS cluster"
+}
+
+variable "loadbalancer_eip" {
+  type        = bool
+  default     = false
+  description = "Whethter to create Elastic IPs for the Loadbalancer"
 }
 
 variable "load_balancer_internal" {
@@ -102,6 +96,11 @@ variable "postfix" {
   description = "Postfix the role and policy names with Role and Policy"
 }
 
+variable "private_subnet_ids" {
+  type        = list(string)
+  description = "List of subnet IDs assigned to ESC cluster"
+}
+
 variable "protocol" {
   type        = string
   default     = "HTTP"
@@ -123,6 +122,12 @@ variable "region" {
 variable "role_policy" {
   type        = string
   description = "The Policy document for the role"
+}
+
+variable "secrets" {
+  type        = map
+  default     = {}
+  description = "An object representing the secret to expose to the docker container"
 }
 
 variable "ssl_policy" {

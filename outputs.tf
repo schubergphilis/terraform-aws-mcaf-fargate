@@ -8,11 +8,6 @@ output "cluster_arn" {
   description = "The ARN of the ECS cluster"
 }
 
-output "loadbalancer_eips" {
-  value       = values(aws_eip.lb).*.public_ip
-  description = "The Elastic IPs of the loadbalancer"
-}
-
 output "fqdn" {
   value       = local.application_fqdn
   description = "FQDN of the route53 endpoint"
@@ -33,9 +28,9 @@ output "https_listener_arn" {
   description = "The ARN of the HTTPS listener"
 }
 
-output "tcp_listener_arn" {
-  value       = local.tcp_listener_arn
-  description = "The ARN of the TCP listener"
+output "loadbalancer_eips" {
+  value       = values(aws_eip.lb).*.public_ip
+  description = "The Elastic IPs of the loadbalancer"
 }
 
 output "security_group_id" {
@@ -56,4 +51,9 @@ output "task_definition_arn" {
 output "task_execution_role_arn" {
   value       = module.task_execution_role.arn
   description = "ARN of the execution role"
+}
+
+output "tcp_listener_arn" {
+  value       = local.tcp_listener_arn
+  description = "The ARN of the TCP listener"
 }
