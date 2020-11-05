@@ -31,9 +31,9 @@
 | desired\_count | Desired number of docker containers to run | `number` | `1` | no |
 | environment | Environment variables defined in the docker container | `map` | `{}` | no |
 | health\_check | Health check settings for the container | <pre>object({<br>    healthy_threshold   = number,<br>    interval            = number,<br>    path                = string,<br>    unhealthy_threshold = number<br>  })</pre> | <pre>{<br>  "healthy_threshold": 3,<br>  "interval": 30,<br>  "path": null,<br>  "unhealthy_threshold": 3<br>}</pre> | no |
+| load\_balancer\_eip | Whether to create Elastic IPs for the load balancer | `bool` | `false` | no |
 | load\_balancer\_internal | Set to true to create an internal load balancer | `bool` | `false` | no |
 | load\_balancer\_subnet\_ids | List of subnet IDs assigned to the LB | `list(string)` | `null` | no |
-| loadbalancer\_eip | Whether to create Elastic IPs for the load balancer | `bool` | `false` | no |
 | memory | Fargate instance memory to provision (in MiB) | `number` | `2048` | no |
 | port | Port exposed by the docker image to redirect traffic to | `number` | `3000` | no |
 | postfix | Postfix the role and policy names with Role and Policy | `bool` | `false` | no |
@@ -50,10 +50,10 @@
 |------|-------------|
 | cluster\_arn | The ARN of the ECS cluster |
 | fqdn | FQDN of the route53 endpoint |
-| hostname | Hostname of the Application Loadbalancer |
+| hostname | Hostname of the Application Load balancer |
 | http\_listener\_arn | The ARN of the HTTP listener |
 | https\_listener\_arn | The ARN of the HTTPS listener |
-| loadbalancer\_eips | The Elastic IPs of the load balancer |
+| load\_balancer\_eips | The Elastic IPs of the load balancer |
 | name | Name of the fargate deployment |
 | security\_group\_id | Security group ID of the ECS task |
 | target\_group\_arn | The ARN of the Target Group |
