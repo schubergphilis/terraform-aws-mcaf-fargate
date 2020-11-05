@@ -4,6 +4,7 @@ locals {
   https_listener_arn  = local.load_balancer != null && var.protocol != "TCP" ? aws_lb_listener.https[0].arn : null
   tcp_listener_arn    = local.load_balancer != null && var.protocol == "TCP" ? aws_lb_listener.tcp[0].arn : null
   load_balancer_count = local.load_balancer != null ? 1 : 0
+  eip_subnets         = var.loadbalancer_eip ? var.load_balancer_subnet_ids : []
 
   target_group_arn = local.load_balancer == null ? null : (
     length(aws_lb_target_group.default) > 0 ? aws_lb_target_group.default[0].arn : null
@@ -20,32 +21,49 @@ resource "aws_security_group" "lb" {
     protocol    = "tcp"
     from_port   = 80
     to_port     = 80
-    cidr_blocks = var.cidr_blocks
+    cidr_blocks = var.cidr_blocks #tfsec:ignore:AWS008
   }
 
   ingress {
     protocol    = "tcp"
     from_port   = 443
     to_port     = 443
-    cidr_blocks = var.cidr_blocks
+    cidr_blocks = var.cidr_blocks #tfsec:ignore:AWS008
   }
 
   egress {
-    protocol    = "-1"
-    from_port   = 0
-    to_port     = 0
-    cidr_blocks = ["0.0.0.0/0"]
+    protocol  = "-1"
+    from_port = 0
+    to_port   = 0
+
+    cidr_blocks = ["0.0.0.0/0"] #tfsec:ignore:AWS009
   }
+}
+
+resource "aws_eip" "lb" {
+  for_each = toset(local.eip_subnets)
+
+  vpc  = true
+  tags = var.tags
 }
 
 resource "aws_lb" "default" {
   count              = local.load_balancer_count
   name               = var.name
-  internal           = var.load_balancer_internal
+  internal           = var.load_balancer_internal #tfsec:ignore:AWS005
   load_balancer_type = var.protocol == "TCP" ? "network" : "application"
   subnets            = var.load_balancer_subnet_ids
   security_groups    = var.protocol != "TCP" ? [aws_security_group.lb[0].id] : null
   tags               = var.tags
+
+  dynamic "subnet_mapping" {
+    for_each = local.eip_subnets
+
+    content {
+      subnet_id     = subnet_mapping.value
+      allocation_id = aws_eip.lb[subnet_mapping.value].id
+    }
+  }
 
   timeouts {
     create = "20m"

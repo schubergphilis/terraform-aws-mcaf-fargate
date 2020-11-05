@@ -38,12 +38,6 @@ variable "environment" {
   description = "Environment variables defined in the docker container"
 }
 
-variable "secrets" {
-  type        = map
-  default     = {}
-  description = "An object representing the secret to expose to the docker container"
-}
-
 variable "health_check" {
   type = object({
     healthy_threshold   = number,
@@ -62,8 +56,13 @@ variable "health_check" {
 
 variable "image" {
   type        = string
-  default     = "nginx:latest"
   description = "Docker image to run in the ECS cluster"
+}
+
+variable "loadbalancer_eip" {
+  type        = bool
+  default     = false
+  description = "Whether to create Elastic IPs for the load balancer"
 }
 
 variable "load_balancer_internal" {
@@ -117,6 +116,12 @@ variable "region" {
 variable "role_policy" {
   type        = string
   description = "The Policy document for the role"
+}
+
+variable "secrets" {
+  type        = map
+  default     = {}
+  description = "Map containing secrets to expose to the docker container"
 }
 
 variable "ssl_policy" {
