@@ -59,7 +59,7 @@ variable "image" {
   description = "Docker image to run in the ECS cluster"
 }
 
-variable "loadbalancer_eip" {
+variable "load_balancer_eip" {
   type        = bool
   default     = false
   description = "Whether to create Elastic IPs for the load balancer"

@@ -15,7 +15,7 @@ output "fqdn" {
 
 output "hostname" {
   value       = local.lb_hostname
-  description = "Hostname of the Application Loadbalancer"
+  description = "Hostname of the Application Load balancer"
 }
 
 output "http_listener_arn" {
@@ -28,7 +28,7 @@ output "https_listener_arn" {
   description = "The ARN of the HTTPS listener"
 }
 
-output "loadbalancer_eips" {
+output "load_balancer_eips" {
   value       = values(aws_eip.lb).*.public_ip
   description = "The Elastic IPs of the load balancer"
 }

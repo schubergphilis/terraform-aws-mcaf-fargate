@@ -4,7 +4,7 @@ locals {
   https_listener_arn  = local.load_balancer != null && var.protocol != "TCP" ? aws_lb_listener.https[0].arn : null
   tcp_listener_arn    = local.load_balancer != null && var.protocol == "TCP" ? aws_lb_listener.tcp[0].arn : null
   load_balancer_count = local.load_balancer != null ? 1 : 0
-  eip_subnets         = var.loadbalancer_eip ? var.load_balancer_subnet_ids : []
+  eip_subnets         = var.load_balancer_eip ? var.load_balancer_subnet_ids : []
 
   target_group_arn = local.load_balancer == null ? null : (
     length(aws_lb_target_group.default) > 0 ? aws_lb_target_group.default[0].arn : null
