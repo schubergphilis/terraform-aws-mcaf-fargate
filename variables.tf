@@ -56,7 +56,6 @@ variable "health_check" {
 
 variable "image" {
   type        = string
-  default     = "nginx:latest"
   description = "Docker image to run in the ECS cluster"
 }
 
