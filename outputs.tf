@@ -30,7 +30,7 @@ output "https_listener_arn" {
 
 output "loadbalancer_eips" {
   value       = values(aws_eip.lb).*.public_ip
-  description = "The Elastic IPs of the loadbalancer"
+  description = "The Elastic IPs of the load balancer"
 }
 
 output "security_group_id" {

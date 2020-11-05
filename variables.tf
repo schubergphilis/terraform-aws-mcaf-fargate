@@ -62,7 +62,7 @@ variable "image" {
 variable "loadbalancer_eip" {
   type        = bool
   default     = false
-  description = "Whethter to create Elastic IPs for the Loadbalancer"
+  description = "Whether to create Elastic IPs for the load balancer"
 }
 
 variable "load_balancer_internal" {
@@ -121,7 +121,7 @@ variable "role_policy" {
 variable "secrets" {
   type        = map
   default     = {}
-  description = "An object representing the secret to expose to the docker container"
+  description = "Map containing secrets to expose to the docker container"
 }
 
 variable "ssl_policy" {
