@@ -38,6 +38,12 @@ variable "environment" {
   description = "Environment variables defined in the docker container"
 }
 
+variable "loadbalancer_eip" {
+  type        = bool
+  default     = false
+  description = "Whethter to create Elastic IPs for the Loadbalancer"
+}
+
 variable "secrets" {
   type        = map
   default     = {}

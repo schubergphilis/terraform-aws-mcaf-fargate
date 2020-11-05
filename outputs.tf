@@ -8,6 +8,11 @@ output "cluster_arn" {
   description = "The ARN of the ECS cluster"
 }
 
+output "loadbalancer_eips" {
+  value       = values(aws_eip.lb).*.public_ip
+  description = "The Elastic IPs of the loadbalancer"
+}
+
 output "fqdn" {
   value       = local.application_fqdn
   description = "FQDN of the route53 endpoint"
