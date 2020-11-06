@@ -52,7 +52,7 @@ resource "aws_lb" "default" {
   name               = var.name
   internal           = var.load_balancer_internal #tfsec:ignore:AWS005
   load_balancer_type = var.protocol == "TCP" ? "network" : "application"
-  subnets            = var.load_balancer_subnet_ids
+  subnets            = var.load_balancer_eip ? null : var.load_balancer_subnet_ids
   security_groups    = var.protocol != "TCP" ? [aws_security_group.lb[0].id] : null
   tags               = var.tags
 
