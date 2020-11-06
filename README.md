@@ -29,6 +29,7 @@
 | cidr\_blocks | CIDR block to allow access to the LB | `list(string)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
 | cpu | Fargate instance CPU units to provision (1 vCPU = 1024 CPU units) | `number` | `1024` | no |
 | desired\_count | Desired number of docker containers to run | `number` | `1` | no |
+| enable\_cross\_zone\_load\_balancing | Enable cross-zone load balancing of the (network) load balancer | `bool` | `false` | no |
 | environment | Environment variables defined in the docker container | `map` | `{}` | no |
 | health\_check | Health check settings for the container | <pre>object({<br>    healthy_threshold   = number,<br>    interval            = number,<br>    path                = string,<br>    unhealthy_threshold = number<br>  })</pre> | <pre>{<br>  "healthy_threshold": 3,<br>  "interval": 30,<br>  "path": null,<br>  "unhealthy_threshold": 3<br>}</pre> | no |
 | load\_balancer\_eip | Whether to create Elastic IPs for the load balancer | `bool` | `false` | no |
@@ -50,7 +51,7 @@
 |------|-------------|
 | cluster\_arn | The ARN of the ECS cluster |
 | fqdn | FQDN of the route53 endpoint |
-| hostname | Hostname of the Application Load balancer |
+| hostname | Hostname of the Application load balancer |
 | http\_listener\_arn | The ARN of the HTTP listener |
 | https\_listener\_arn | The ARN of the HTTPS listener |
 | load\_balancer\_eips | The Elastic IPs of the load balancer |
