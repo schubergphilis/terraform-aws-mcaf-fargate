@@ -48,13 +48,14 @@ resource "aws_eip" "lb" {
 }
 
 resource "aws_lb" "default" {
-  count              = local.load_balancer_count
-  name               = var.name
-  internal           = var.load_balancer_internal #tfsec:ignore:AWS005
-  load_balancer_type = var.protocol == "TCP" ? "network" : "application"
-  subnets            = var.load_balancer_eip ? null : var.load_balancer_subnet_ids
-  security_groups    = var.protocol != "TCP" ? [aws_security_group.lb[0].id] : null
-  tags               = var.tags
+  count                            = local.load_balancer_count
+  name                             = var.name
+  internal                         = var.load_balancer_internal #tfsec:ignore:AWS005
+  load_balancer_type               = var.protocol == "TCP" ? "network" : "application"
+  enable_cross_zone_load_balancing = var.protocol == "TCP" ? var.enable_cross_zone_load_balancing : false
+  subnets                          = var.load_balancer_eip ? null : var.load_balancer_subnet_ids
+  security_groups                  = var.protocol != "TCP" ? [aws_security_group.lb[0].id] : null
+  tags                             = var.tags
 
   dynamic "subnet_mapping" {
     for_each = local.eip_subnets

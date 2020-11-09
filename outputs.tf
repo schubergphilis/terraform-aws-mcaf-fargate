@@ -15,7 +15,7 @@ output "fqdn" {
 
 output "hostname" {
   value       = local.lb_hostname
-  description = "Hostname of the Application Load balancer"
+  description = "Hostname of the Application load balancer"
 }
 
 output "http_listener_arn" {
