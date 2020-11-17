@@ -29,7 +29,7 @@ output "https_listener_arn" {
 }
 
 output "load_balancer_eips" {
-  value       = values(aws_eip.lb).*.public_ip
+  value       = try(aws_eip.lb.*.public_ip, null)
   description = "The Elastic IPs of the load balancer"
 }
 
