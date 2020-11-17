@@ -32,24 +32,17 @@ resource "aws_acm_certificate" "default" {
   }
 }
 
-resource "aws_route53_record" "cert_validation" {
-  for_each = {
-    for dvo in aws_acm_certificate.default[0].domain_validation_options : dvo.domain_name => {
-      name   = dvo.resource_record_name
-      record = dvo.resource_record_value
-      type   = dvo.resource_record_type
-    }
-  }
-
-  name    = each.value.name
-  records = [each.value.record]
-  ttl     = 60
-  type    = each.value.type
+resource "aws_route53_record" "validation" {
+  count   = local.certificate_count
+  name    = aws_acm_certificate.default[count.index].domain_validation_options.*.resource_record_name[0]
+  records = [aws_acm_certificate.default[count.index].domain_validation_options.*.resource_record_value[0]]
+  type    = aws_acm_certificate.default[count.index].domain_validation_options.*.resource_record_type[0]
   zone_id = data.aws_route53_zone.current[0].zone_id
+  ttl     = 60
 }
 
 resource "aws_acm_certificate_validation" "default" {
   count                   = local.certificate_count
   certificate_arn         = local.certificate_arn
-  validation_record_fqdns = [for record in aws_route53_record.cert_validation : record.fqdn]
+  validation_record_fqdns = [aws_route53_record.validation[count.index].fqdn]
 }

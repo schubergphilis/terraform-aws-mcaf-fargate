@@ -41,7 +41,7 @@ resource "aws_security_group" "lb" {
 }
 
 resource "aws_eip" "lb" {
-  for_each = toset(local.eip_subnets)
+  count = length(local.eip_subnets)
 
   vpc  = true
   tags = var.tags
@@ -58,11 +58,14 @@ resource "aws_lb" "default" {
   tags                             = var.tags
 
   dynamic "subnet_mapping" {
-    for_each = local.eip_subnets
+    for_each = [for subnet_id in local.eip_subnets : {
+      subnet_id     = subnet_id
+      allocation_id = aws_eip.lb[index(local.eip_subnets, subnet_id)].id
+    }]
 
     content {
-      subnet_id     = subnet_mapping.value
-      allocation_id = aws_eip.lb[subnet_mapping.value].id
+      subnet_id     = subnet_mapping.value.subnet_id
+      allocation_id = subnet_mapping.value.allocation_id
     }
   }
 
