@@ -29,7 +29,7 @@
 | cpu | Fargate instance CPU units to provision (1 vCPU = 1024 CPU units) | `number` | `1024` | no |
 | desired\_count | Desired number of docker containers to run | `number` | `1` | no |
 | enable\_cross\_zone\_load\_balancing | Enable cross-zone load balancing of the (network) load balancer | `bool` | `false` | no |
-| environment | Environment variables defined in the docker container | `map` | `{}` | no |
+| environment | Environment variables defined in the docker container | `map(any)` | `{}` | no |
 | health\_check | Health check settings for the container | <pre>object({<br>    healthy_threshold   = number,<br>    interval            = number,<br>    path                = string,<br>    unhealthy_threshold = number<br>  })</pre> | <pre>{<br>  "healthy_threshold": 3,<br>  "interval": 30,<br>  "path": null,<br>  "unhealthy_threshold": 3<br>}</pre> | no |
 | load\_balancer\_eip | Whether to create Elastic IPs for the load balancer | `bool` | `false` | no |
 | load\_balancer\_internal | Set to true to create an internal load balancer | `bool` | `false` | no |
@@ -40,7 +40,7 @@
 | protocol | The target protocol | `string` | `"HTTP"` | no |
 | public\_ip | Assign a public ip to the service | `bool` | `false` | no |
 | region | The region this fargate cluster should reside in, defaults to the region used by the callee | `string` | `null` | no |
-| secrets | Map containing secrets to expose to the docker container | `map` | `{}` | no |
+| secrets | Map containing secrets to expose to the docker container | `map(any)` | `{}` | no |
 | ssl\_policy | SSL Policy for the LB Listener | `string` | `"ELBSecurityPolicy-TLS-1-2-Ext-2018-06"` | no |
 | subdomain | The DNS subdomain and zone ID for the LB | <pre>object({<br>    name    = string,<br>    zone_id = string<br>  })</pre> | `null` | no |
 
