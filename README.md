@@ -13,7 +13,6 @@
 | Name | Version |
 |------|---------|
 | aws | >= 3.10 |
-| null | n/a |
 
 ## Inputs
 
