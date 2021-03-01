@@ -39,7 +39,7 @@ variable "ecs_subnet_ids" {
 }
 
 variable "environment" {
-  type        = map(any)
+  type        = map(string)
   default     = {}
   description = "Environment variables defined in the docker container"
 }
