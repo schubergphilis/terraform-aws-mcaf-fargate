@@ -125,7 +125,7 @@ variable "role_policy" {
 }
 
 variable "secrets" {
-  type        = map(any)
+  type        = map(string)
   default     = {}
   description = "Map containing secrets to expose to the docker container"
 }
