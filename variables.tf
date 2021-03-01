@@ -39,7 +39,7 @@ variable "ecs_subnet_ids" {
 }
 
 variable "environment" {
-  type        = map
+  type        = map(string)
   default     = {}
   description = "Environment variables defined in the docker container"
 }
@@ -125,7 +125,7 @@ variable "role_policy" {
 }
 
 variable "secrets" {
-  type        = map
+  type        = map(string)
   default     = {}
   description = "Map containing secrets to expose to the docker container"
 }

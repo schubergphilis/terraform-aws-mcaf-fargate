@@ -1,6 +1,22 @@
 locals {
   load_balancer = var.load_balancer_subnet_ids != null ? { create : true } : {}
   region        = var.region != null ? var.region : data.aws_region.current.name
+
+  environment = [
+    for k, v in var.environment :
+    {
+      name  = k
+      value = v
+    }
+  ]
+
+  secrets = [
+    for k, v in var.secrets :
+    {
+      name  = k
+      value = v
+    }
+  ]
 }
 
 data "aws_region" "current" {}
@@ -27,24 +43,6 @@ resource "aws_cloudwatch_log_group" "default" {
   tags              = var.tags
 }
 
-data "null_data_source" "environment" {
-  count = length(var.environment)
-
-  inputs = {
-    name  = element(keys(var.environment), count.index)
-    value = element(values(var.environment), count.index)
-  }
-}
-
-data "null_data_source" "secrets" {
-  count = length(var.secrets)
-
-  inputs = {
-    name      = element(keys(var.secrets), count.index)
-    valueFrom = element(values(var.secrets), count.index)
-  }
-}
-
 resource "aws_ecs_task_definition" "default" {
   family                   = var.name
   execution_role_arn       = module.task_execution_role.arn
@@ -61,8 +59,8 @@ resource "aws_ecs_task_definition" "default" {
     cpu         = var.cpu
     memory      = var.memory
     log_group   = aws_cloudwatch_log_group.default.name
-    environment = jsonencode(data.null_data_source.environment.*.outputs)
-    secrets     = jsonencode(data.null_data_source.secrets.*.outputs)
+    environment = jsonencode(local.environment)
+    secrets     = jsonencode(local.secrets)
     region      = local.region
   })
 
@@ -75,7 +73,7 @@ resource "aws_security_group" "ecs" {
   vpc_id      = var.vpc_id
   tags        = var.tags
 
-  dynamic ingress {
+  dynamic "ingress" {
     for_each = local.load_balancer
 
     content {
@@ -117,7 +115,7 @@ resource "aws_ecs_service" "default" {
     assign_public_ip = var.public_ip
   }
 
-  dynamic load_balancer {
+  dynamic "load_balancer" {
     for_each = local.load_balancer
 
     content {
