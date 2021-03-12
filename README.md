@@ -31,7 +31,7 @@
 | enable\_cross\_zone\_load\_balancing | Enable cross-zone load balancing of the (network) load balancer | `bool` | `false` | no |
 | environment | Environment variables defined in the docker container | `map(string)` | `{}` | no |
 | health\_check | Health check settings for the container | <pre>object({<br>    healthy_threshold   = number,<br>    interval            = number,<br>    path                = string,<br>    unhealthy_threshold = number<br>  })</pre> | <pre>{<br>  "healthy_threshold": 3,<br>  "interval": 30,<br>  "path": null,<br>  "unhealthy_threshold": 3<br>}</pre> | no |
-| load\_balancer\_eip | Whether to create Elastic IPs for the load balancer | `bool` | `false` | no |
+| load\_balancer\_eip | Whether to create Elastic IPs for the load balancer (only supported when protocol == 'TCP') | `bool` | `false` | no |
 | load\_balancer\_internal | Set to true to create an internal load balancer | `bool` | `false` | no |
 | load\_balancer\_subnet\_ids | List of subnet IDs assigned to the LB | `list(string)` | `null` | no |
 | memory | Fargate instance memory to provision (in MiB) | `number` | `2048` | no |
