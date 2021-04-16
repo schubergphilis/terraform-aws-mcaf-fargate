@@ -41,6 +41,7 @@
 | public\_ip | Assign a public ip to the service | `bool` | `false` | no |
 | region | The region this fargate cluster should reside in, defaults to the region used by the callee | `string` | `null` | no |
 | secrets | Map containing secrets to expose to the docker container | `map(string)` | `{}` | no |
+| service\_launch\_type | The service launch type: either FARGATE or EC2 | `string` | `"FARGATE"` | no |
 | ssl\_policy | SSL Policy for the LB Listener | `string` | `"ELBSecurityPolicy-TLS-1-2-Ext-2018-06"` | no |
 | subdomain | The DNS subdomain and zone ID for the LB | <pre>object({<br>    name    = string,<br>    zone_id = string<br>  })</pre> | `null` | no |
 
