@@ -48,7 +48,7 @@ resource "aws_ecs_task_definition" "default" {
   execution_role_arn       = module.task_execution_role.arn
   task_role_arn            = module.task_execution_role.arn
   network_mode             = "awsvpc"
-  requires_compatibilities = ["FARGATE"]
+  requires_compatibilities = [var.service_launch_type]
   cpu                      = var.cpu
   memory                   = var.memory
 
@@ -107,7 +107,7 @@ resource "aws_ecs_service" "default" {
   cluster         = aws_ecs_cluster.default.id
   task_definition = aws_ecs_task_definition.default.arn
   desired_count   = var.desired_count
-  launch_type     = "FARGATE"
+  launch_type     = var.service_launch_type
 
   network_configuration {
     security_groups  = [aws_security_group.ecs.id]
