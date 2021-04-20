@@ -130,6 +130,17 @@ variable "secrets" {
   description = "Map containing secrets to expose to the docker container"
 }
 
+variable "service_launch_type" {
+  type        = string
+  default     = "FARGATE"
+  description = "The service launch type: either FARGATE or EC2"
+
+  validation {
+    condition     = contains(["FARGATE", "EC2"], var.service_launch_type)
+    error_message = "Allowed values for service_launch_type are \"FARGATE\", or \"EC2\"."
+  }
+}
+
 variable "ssl_policy" {
   type        = string
   default     = "ELBSecurityPolicy-TLS-1-2-Ext-2018-06"
