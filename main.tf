@@ -112,7 +112,7 @@ resource "aws_ecs_service" "default" {
   network_configuration {
     security_groups  = [aws_security_group.ecs.id]
     subnets          = var.ecs_subnet_ids
-    assign_public_ip = var.public_ip
+    assign_public_ip = var.service_launch_type == "FARGATE" ? var.public_ip : false
   }
 
   dynamic "load_balancer" {
