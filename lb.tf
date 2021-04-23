@@ -16,6 +16,7 @@ resource "aws_security_group" "lb" {
   name        = "${var.name}-lb"
   description = "Controls access to the LB"
   vpc_id      = var.vpc_id
+  tags        = var.tags
 
   ingress {
     protocol    = "tcp"
