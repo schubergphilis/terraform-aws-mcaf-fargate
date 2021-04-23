@@ -147,6 +147,12 @@ variable "ssl_policy" {
   description = "SSL Policy for the LB Listener"
 }
 
+variable "target_group_stickiness" {
+  type        = bool
+  default     = false
+  description = "Whether to bind a client’s session to a specific instance within the target group"
+}
+
 variable "subdomain" {
   type = object({
     name    = string,
