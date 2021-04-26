@@ -112,7 +112,7 @@ resource "aws_lb_target_group" "default" {
   }
 
   stickiness {
-    enabled = false
+    enabled = var.target_group_stickiness
     type    = var.protocol == "HTTP" || var.protocol == "HTTPS" ? "lb_cookie" : "source_ip"
   }
 }

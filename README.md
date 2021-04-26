@@ -44,6 +44,7 @@
 | service\_launch\_type | The service launch type: either FARGATE or EC2 | `string` | `"FARGATE"` | no |
 | ssl\_policy | SSL Policy for the LB Listener | `string` | `"ELBSecurityPolicy-TLS-1-2-Ext-2018-06"` | no |
 | subdomain | The DNS subdomain and zone ID for the LB | <pre>object({<br>    name    = string,<br>    zone_id = string<br>  })</pre> | `null` | no |
+| target\_group\_stickiness | Whether to bind a client’s session to a specific instance within the target group | `bool` | `false` | no |
 
 ## Outputs
 
