@@ -1,18 +1,13 @@
-variable "name" {
+variable "certificate_arn" {
   type        = string
-  description = "Name of the Fargate cluster"
+  default     = null
+  description = "Certificate ARN for the LB Listener"
 }
 
 variable "cidr_blocks" {
   type        = list(string)
   default     = ["0.0.0.0/0"]
   description = "CIDR block to allow access to the LB"
-}
-
-variable "certificate_arn" {
-  type        = string
-  default     = null
-  description = "Certificate ARN for the LB Listener"
 }
 
 variable "cpu" {
@@ -27,15 +22,15 @@ variable "desired_count" {
   description = "Desired number of docker containers to run"
 }
 
+variable "ecs_subnet_ids" {
+  type        = list(string)
+  description = "List of subnet IDs assigned to ECS cluster"
+}
+
 variable "enable_cross_zone_load_balancing" {
   type        = bool
   default     = false
   description = "Enable cross-zone load balancing of the (network) load balancer"
-}
-
-variable "ecs_subnet_ids" {
-  type        = list(string)
-  description = "List of subnet IDs assigned to ECS cluster"
 }
 
 variable "environment" {
@@ -87,6 +82,11 @@ variable "memory" {
   type        = number
   default     = 2048
   description = "Fargate instance memory to provision (in MiB)"
+}
+
+variable "name" {
+  type        = string
+  description = "Name of the Fargate cluster"
 }
 
 variable "port" {
@@ -147,12 +147,6 @@ variable "ssl_policy" {
   description = "SSL Policy for the LB Listener"
 }
 
-variable "target_group_stickiness" {
-  type        = bool
-  default     = false
-  description = "Whether to bind a client’s session to a specific instance within the target group"
-}
-
 variable "subdomain" {
   type = object({
     name    = string,
@@ -162,12 +156,18 @@ variable "subdomain" {
   description = "The DNS subdomain and zone ID for the LB"
 }
 
-variable "vpc_id" {
-  type        = string
-  description = "AWS vpc id"
-}
-
 variable "tags" {
   type        = map(string)
   description = "A mapping of tags to assign to the resources"
+}
+
+variable "target_group_stickiness" {
+  type        = bool
+  default     = false
+  description = "Whether to bind a client’s session to a specific instance within the target group"
+}
+
+variable "vpc_id" {
+  type        = string
+  description = "AWS vpc id"
 }
