@@ -51,6 +51,7 @@ resource "aws_eip" "lb" {
 resource "aws_lb" "default" {
   count                            = local.load_balancer_count
   name                             = var.name
+  drop_invalid_header_fields       = var.protocol != "TCP" ? true : null
   internal                         = var.load_balancer_internal #tfsec:ignore:AWS005
   load_balancer_type               = var.protocol == "TCP" ? "network" : "application"
   enable_cross_zone_load_balancing = var.protocol == "TCP" ? var.enable_cross_zone_load_balancing : false
