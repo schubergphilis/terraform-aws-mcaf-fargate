@@ -4,7 +4,7 @@ locals {
   ) : null
 
   certificate_arn   = var.certificate_arn != null ? var.certificate_arn : aws_acm_certificate.default[0].arn
-  certificate_count = var.certificate_arn == null && var.subdomain != null ? local.load_balancer_count : 0
+  certificate_count = var.certificate_arn == null && var.subdomain != null && var.protocol != "TCP" ? local.load_balancer_count : 0
 }
 
 data "aws_route53_zone" "current" {
