@@ -105,6 +105,11 @@ variable "protocol" {
   type        = string
   default     = "HTTP"
   description = "The target protocol"
+
+  validation {
+    condition     = contains(["HTTP", "TCP"], var.protocol)
+    error_message = "Allowed values for protocol are \"HTTP\" or \"TCP\"."
+  }
 }
 
 variable "public_ip" {
