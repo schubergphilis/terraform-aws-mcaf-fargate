@@ -63,7 +63,7 @@ variable "image" {
 variable "load_balancer_eip" {
   type        = bool
   default     = false
-  description = "Whether to create Elastic IPs for the load balancer"
+  description = "Whether to create Elastic IPs for the load balancer (when `var.protocol` is `TCP`)"
 }
 
 variable "load_balancer_internal" {
