@@ -95,13 +95,14 @@ resource "aws_lb_listener" "http" {
 }
 
 resource "aws_lb_target_group" "default" {
-  count       = local.load_balancer_count
-  name        = var.name
-  port        = var.port
-  protocol    = var.protocol
-  target_type = "ip"
-  vpc_id      = var.vpc_id
-  tags        = var.tags
+  count                = local.load_balancer_count
+  name                 = var.name
+  deregistration_delay = var.load_balancer_deregistration_delay
+  port                 = var.port
+  protocol             = var.protocol
+  target_type          = "ip"
+  vpc_id               = var.vpc_id
+  tags                 = var.tags
 
   health_check {
     interval            = var.health_check.interval
