@@ -60,6 +60,12 @@ variable "image" {
   description = "Docker image to run in the ECS cluster"
 }
 
+variable "load_balancer_deregistration_delay" {
+  type        = number
+  default     = 300
+  description = "The amount of time before a target is deregistered when draining"
+}
+
 variable "load_balancer_eip" {
   type        = bool
   default     = false
