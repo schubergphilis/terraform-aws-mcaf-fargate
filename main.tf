@@ -100,6 +100,15 @@ resource "aws_security_group" "ecs" {
 resource "aws_ecs_cluster" "default" {
   name = var.name
   tags = var.tags
+
+  capacity_providers = aws_ecs_capacity_provider.default[*].name
+
+  dynamic "default_capacity_provider_strategy" {
+    for_each = aws_ecs_capacity_provider.default[*]
+    content {
+      capacity_provider = default_capacity_provider_strategy.value["name"]
+    }
+  }
 }
 
 resource "aws_ecs_service" "default" {
@@ -122,6 +131,23 @@ resource "aws_ecs_service" "default" {
       target_group_arn = aws_lb_target_group.default.0.id
       container_name   = "app-${var.name}"
       container_port   = var.port
+    }
+  }
+}
+
+resource "aws_ecs_capacity_provider" "default" {
+  count = var.capacity_provider_asg_arn != null ? 1 : 0
+
+  name = "${var.name}-capacity-provider"
+
+  auto_scaling_group_provider {
+    auto_scaling_group_arn         = var.capacity_provider_asg_arn
+    managed_termination_protection = "DISABLED"
+
+    managed_scaling {
+      instance_warmup_period = 60
+      status                 = "ENABLED"
+      target_capacity        = 100
     }
   }
 }
