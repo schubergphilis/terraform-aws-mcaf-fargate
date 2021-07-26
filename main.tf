@@ -13,8 +13,8 @@ locals {
   secrets = [
     for k, v in var.secrets :
     {
-      name  = k
-      value = v
+      name      = k
+      valueFrom = v
     }
   ]
 }
