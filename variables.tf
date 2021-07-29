@@ -1,7 +1,7 @@
 variable "capacity_provider_asg_arn" {
   type        = string
   default     = null
-  description = "ARN of Autoscaling Group for capacity provider."
+  description = "ARN of Autoscaling Group for capacity provider"
 }
 
 variable "certificate_arn" {
