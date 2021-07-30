@@ -24,6 +24,7 @@
 | role\_policy | The Policy document for the role | `string` | n/a | yes |
 | tags | A mapping of tags to assign to the resources | `map(string)` | n/a | yes |
 | vpc\_id | AWS vpc id | `string` | n/a | yes |
+| capacity\_provider\_asg\_arn | ARN of Autoscaling Group for capacity provider | `string` | `null` | no |
 | certificate\_arn | Certificate ARN for the LB Listener | `string` | `null` | no |
 | cidr\_blocks | CIDR block to allow access to the LB | `list(string)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
 | cpu | Fargate instance CPU units to provision (1 vCPU = 1024 CPU units) | `number` | `1024` | no |
