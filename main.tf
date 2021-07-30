@@ -98,10 +98,9 @@ resource "aws_security_group" "ecs" {
 }
 
 resource "aws_ecs_cluster" "default" {
-  name = var.name
-  tags = var.tags
-
+  name               = var.name
   capacity_providers = aws_ecs_capacity_provider.default[*].name
+  tags               = var.tags
 
   dynamic "default_capacity_provider_strategy" {
     for_each = aws_ecs_capacity_provider.default[*]
@@ -137,7 +136,7 @@ resource "aws_ecs_service" "default" {
 
 resource "aws_ecs_capacity_provider" "default" {
   count = var.capacity_provider_asg_arn != null ? 1 : 0
-  name = "${var.name}-capacity-provider"
+  name  = "${var.name}-capacity-provider"
 
   auto_scaling_group_provider {
     auto_scaling_group_arn         = var.capacity_provider_asg_arn
