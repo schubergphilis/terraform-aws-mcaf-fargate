@@ -106,7 +106,7 @@ resource "aws_ecs_cluster" "default" {
   dynamic "default_capacity_provider_strategy" {
     for_each = aws_ecs_capacity_provider.default[*]
     content {
-      capacity_provider = default_capacity_provider_strategy.value["name"]
+      capacity_provider = each.value["name"]
     }
   }
 }
