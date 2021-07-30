@@ -137,7 +137,6 @@ resource "aws_ecs_service" "default" {
 
 resource "aws_ecs_capacity_provider" "default" {
   count = var.capacity_provider_asg_arn != null ? 1 : 0
-
   name = "${var.name}-capacity-provider"
 
   auto_scaling_group_provider {
