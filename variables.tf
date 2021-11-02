@@ -33,16 +33,16 @@ variable "ecs_subnet_ids" {
   description = "List of subnet IDs assigned to ECS cluster"
 }
 
-variable "enable_cross_zone_load_balancing" {
-  type        = bool
-  default     = false
-  description = "Enable cross-zone load balancing of the (network) load balancer"
-}
-
 variable "enable_container_insights" {
   type        = bool
   default     = true
   description = "Enable Cloudwatch Container Insights"
+}
+
+variable "enable_cross_zone_load_balancing" {
+  type        = bool
+  default     = false
+  description = "Enable cross-zone load balancing of the (network) load balancer"
 }
 
 variable "environment" {
