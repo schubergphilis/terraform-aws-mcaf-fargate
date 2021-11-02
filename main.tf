@@ -77,6 +77,7 @@ resource "aws_security_group" "ecs" {
     for_each = local.load_balancer
 
     content {
+      description     = "Allow access from the ECS cluster"
       protocol        = "tcp"
       from_port       = var.port
       to_port         = var.port
@@ -86,6 +87,7 @@ resource "aws_security_group" "ecs" {
   }
 
   egress {
+    description = "Allow all outgoing traffic"
     protocol    = "-1"
     from_port   = 0
     to_port     = 0
@@ -107,6 +109,11 @@ resource "aws_ecs_cluster" "default" {
     content {
       capacity_provider = default_capacity_provider_strategy.value["name"]
     }
+  }
+
+  setting {
+    name  = "containerInsights"
+    value = var.enable_container_insights ? "enabled" : "disabled"
   }
 }
 

@@ -29,6 +29,7 @@
 | cidr\_blocks | CIDR block to allow access to the LB | `list(string)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
 | cpu | Fargate instance CPU units to provision (1 vCPU = 1024 CPU units) | `number` | `1024` | no |
 | desired\_count | Desired number of docker containers to run | `number` | `1` | no |
+| enable\_container\_insights | Enable Cloudwatch Container Insights | `bool` | `true` | no |
 | enable\_cross\_zone\_load\_balancing | Enable cross-zone load balancing of the (network) load balancer | `bool` | `false` | no |
 | environment | Environment variables defined in the docker container | `map(string)` | `{}` | no |
 | health\_check | Health check settings for the container | <pre>object({<br>    healthy_threshold   = number,<br>    interval            = number,<br>    path                = string,<br>    unhealthy_threshold = number<br>  })</pre> | <pre>{<br>  "healthy_threshold": 3,<br>  "interval": 30,<br>  "path": null,<br>  "unhealthy_threshold": 3<br>}</pre> | no |
