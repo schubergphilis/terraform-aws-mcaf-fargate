@@ -39,6 +39,12 @@ variable "enable_cross_zone_load_balancing" {
   description = "Enable cross-zone load balancing of the (network) load balancer"
 }
 
+variable "enable_container_insights" {
+  type        = bool
+  default     = true
+  description = "Enable Cloudwatch Container Insights"
+}
+
 variable "environment" {
   type        = map(string)
   default     = {}
