@@ -22,7 +22,7 @@ locals {
 data "aws_region" "current" {}
 
 module "task_execution_role" {
-  source                = "github.com/schubergphilis/terraform-aws-mcaf-role?ref=v0.3.0"
+  source                = "github.com/schubergphilis/terraform-aws-mcaf-role?ref=v0.3.2"
   name                  = "TaskExecutionRole-${var.name}"
   create_policy         = true
   principal_type        = "Service"
@@ -40,6 +40,7 @@ resource "aws_iam_role_policy_attachment" "task_execution_role" {
 resource "aws_cloudwatch_log_group" "default" {
   name              = "/ecs/${var.name}"
   retention_in_days = 30
+  kms_key_id        = var.kms_key_id
   tags              = var.tags
 }
 
@@ -91,7 +92,7 @@ resource "aws_security_group" "ecs" {
     protocol    = "-1"
     from_port   = 0
     to_port     = 0
-    cidr_blocks = ["0.0.0.0/0"] #tfsec:ignore:AWS009
+    cidr_blocks = ["0.0.0.0/0"] #tfsec:ignore:aws-vpc-no-public-egress-sgr
   }
 
   lifecycle {
@@ -100,20 +101,40 @@ resource "aws_security_group" "ecs" {
 }
 
 resource "aws_ecs_cluster" "default" {
-  name               = var.name
-  capacity_providers = aws_ecs_capacity_provider.default[*].name
-  tags               = var.tags
-
-  dynamic "default_capacity_provider_strategy" {
-    for_each = aws_ecs_capacity_provider.default[*]
-    content {
-      capacity_provider = default_capacity_provider_strategy.value["name"]
-    }
-  }
+  name = var.name
+  tags = var.tags
 
   setting {
     name  = "containerInsights"
     value = var.enable_container_insights ? "enabled" : "disabled"
+  }
+}
+
+resource "aws_ecs_capacity_provider" "default" {
+  count = var.capacity_provider_asg_arn != null ? 1 : 0
+  name  = "${var.name}-capacity-provider"
+
+  auto_scaling_group_provider {
+    auto_scaling_group_arn         = var.capacity_provider_asg_arn
+    managed_termination_protection = "DISABLED"
+
+    managed_scaling {
+      instance_warmup_period = 60
+      status                 = "ENABLED"
+      target_capacity        = 100
+    }
+  }
+}
+
+resource "aws_ecs_cluster_capacity_providers" "default" {
+  count              = var.capacity_provider_asg_arn != null ? 1 : 0
+  capacity_providers = [aws_ecs_capacity_provider.default[*].name]
+  cluster_name       = aws_ecs_cluster.default.name
+
+  default_capacity_provider_strategy {
+    base              = 1
+    weight            = 100
+    capacity_provider = aws_ecs_capacity_provider.default[*].name
   }
 }
 
@@ -138,22 +159,6 @@ resource "aws_ecs_service" "default" {
       target_group_arn = aws_lb_target_group.default.0.id
       container_name   = "app-${var.name}"
       container_port   = var.port
-    }
-  }
-}
-
-resource "aws_ecs_capacity_provider" "default" {
-  count = var.capacity_provider_asg_arn != null ? 1 : 0
-  name  = "${var.name}-capacity-provider"
-
-  auto_scaling_group_provider {
-    auto_scaling_group_arn         = var.capacity_provider_asg_arn
-    managed_termination_protection = "DISABLED"
-
-    managed_scaling {
-      instance_warmup_period = 60
-      status                 = "ENABLED"
-      target_capacity        = 100
     }
   }
 }
