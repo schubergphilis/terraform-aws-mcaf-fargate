@@ -6,13 +6,14 @@
 | Name | Version |
 |------|---------|
 | terraform | >= 0.13.0 |
-| aws | >= 3.10 |
+| aws | >= 4.0.0 |
+| source | hashicorp/aws |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| aws | >= 3.10 |
+| aws | >= 4.0.0 |
 
 ## Inputs
 
