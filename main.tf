@@ -40,6 +40,7 @@ resource "aws_iam_role_policy_attachment" "task_execution_role" {
 resource "aws_cloudwatch_log_group" "default" {
   name              = "/ecs/${var.name}"
   retention_in_days = 30
+  kms_key_id        = var.kms_key_id
   tags              = var.tags
 }
 

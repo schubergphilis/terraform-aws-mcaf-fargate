@@ -72,6 +72,12 @@ variable "image" {
   description = "Docker image to run in the ECS cluster"
 }
 
+variable "kms_key_id" {
+  type        = string
+  default     = null
+  description = "The custom KMS key ID used encryption of the Cloudwatch log group"
+}
+
 variable "load_balancer_deregistration_delay" {
   type        = number
   default     = 300
