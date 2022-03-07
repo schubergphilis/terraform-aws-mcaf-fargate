@@ -7,7 +7,6 @@
 |------|---------|
 | terraform | >= 0.13.0 |
 | aws | >= 4.0.0 |
-| source | hashicorp/aws |
 
 ## Providers
 
