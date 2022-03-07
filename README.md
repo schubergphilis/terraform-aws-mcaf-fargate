@@ -33,6 +33,7 @@
 | enable\_cross\_zone\_load\_balancing | Enable cross-zone load balancing of the (network) load balancer | `bool` | `false` | no |
 | environment | Environment variables defined in the docker container | `map(string)` | `{}` | no |
 | health\_check | Health check settings for the container | <pre>object({<br>    healthy_threshold   = number,<br>    interval            = number,<br>    path                = string,<br>    unhealthy_threshold = number<br>  })</pre> | <pre>{<br>  "healthy_threshold": 3,<br>  "interval": 30,<br>  "path": null,<br>  "unhealthy_threshold": 3<br>}</pre> | no |
+| kms\_key\_id | The custom KMS key ID used encryption of the Cloudwatch log group | `string` | `null` | no |
 | load\_balancer\_deregistration\_delay | The amount of time before a target is deregistered when draining | `number` | `300` | no |
 | load\_balancer\_eip | Whether to create Elastic IPs for the load balancer | `bool` | `false` | no |
 | load\_balancer\_internal | Set to true to create an internal load balancer | `bool` | `false` | no |
