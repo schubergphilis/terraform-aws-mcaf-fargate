@@ -110,18 +110,6 @@ resource "aws_ecs_cluster" "default" {
   }
 }
 
-resource "aws_ecs_cluster_capacity_providers" "default" {
-  count              = var.capacity_provider_asg_arn != null ? 1 : 0
-  capacity_providers = [aws_ecs_capacity_provider.default[*].name]
-  cluster_name       = aws_ecs_cluster.default.name
-
-  default_capacity_provider_strategy {
-    base              = 1
-    weight            = 100
-    capacity_provider = aws_ecs_capacity_provider.default[*].name
-  }
-}
-
 resource "aws_ecs_capacity_provider" "default" {
   count = var.capacity_provider_asg_arn != null ? 1 : 0
   name  = "${var.name}-capacity-provider"
@@ -135,6 +123,18 @@ resource "aws_ecs_capacity_provider" "default" {
       status                 = "ENABLED"
       target_capacity        = 100
     }
+  }
+}
+
+resource "aws_ecs_cluster_capacity_providers" "default" {
+  count              = var.capacity_provider_asg_arn != null ? 1 : 0
+  capacity_providers = [aws_ecs_capacity_provider.default[*].name]
+  cluster_name       = aws_ecs_cluster.default.name
+
+  default_capacity_provider_strategy {
+    base              = 1
+    weight            = 100
+    capacity_provider = aws_ecs_capacity_provider.default[*].name
   }
 }
 
