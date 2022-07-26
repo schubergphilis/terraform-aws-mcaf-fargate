@@ -62,7 +62,7 @@ resource "aws_ecs_task_definition" "default" {
     log_group              = aws_cloudwatch_log_group.default.name
     environment            = jsonencode(local.environment)
     secrets                = jsonencode(local.secrets)
-    readonlyRootFilesystem = var.readonlyRootFilesystem
+    readonlyRootFilesystem = var.readonly_root_filesystem
     region                 = local.region
   })
 
