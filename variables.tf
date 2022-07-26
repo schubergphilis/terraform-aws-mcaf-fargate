@@ -142,6 +142,12 @@ variable "public_ip" {
   description = "Assign a public ip to the service"
 }
 
+variable "readonlyRootFilesystem" {
+  type        = bool
+  default     = true
+  description = "When this parameter is true, the container is given read-only access to its root file system"
+}
+
 variable "region" {
   type        = string
   default     = null
