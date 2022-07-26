@@ -54,15 +54,16 @@ resource "aws_ecs_task_definition" "default" {
   memory                   = var.memory
 
   container_definitions = templatefile("${path.module}/templates/container_definition.tpl", {
-    name        = var.name
-    image       = var.image
-    port        = var.port
-    cpu         = var.cpu
-    memory      = var.memory
-    log_group   = aws_cloudwatch_log_group.default.name
-    environment = jsonencode(local.environment)
-    secrets     = jsonencode(local.secrets)
-    region      = local.region
+    name                   = var.name
+    image                  = var.image
+    port                   = var.port
+    cpu                    = var.cpu
+    memory                 = var.memory
+    log_group              = aws_cloudwatch_log_group.default.name
+    environment            = jsonencode(local.environment)
+    secrets                = jsonencode(local.secrets)
+    readonlyRootFilesystem = var.readonly_root_filesystem
+    region                 = local.region
   })
 
   tags = var.tags
