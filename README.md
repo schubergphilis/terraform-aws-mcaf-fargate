@@ -144,7 +144,7 @@
 | <a name="input_postfix"></a> [postfix](#input\_postfix) | Postfix the role and policy names with Role and Policy | `bool` | `false` | no |
 | <a name="input_protocol"></a> [protocol](#input\_protocol) | The target protocol | `string` | `"HTTP"` | no |
 | <a name="input_public_ip"></a> [public\_ip](#input\_public\_ip) | Assign a public ip to the service | `bool` | `false` | no |
-| <a name="input_readonlyRootFilesystem"></a> [readonlyRootFilesystem](#input\_readonlyRootFilesystem) | When this parameter is true, the container is given read-only access to its root file system | `bool` | `true` | no |
+| <a name="input_readonly_root_filesystem"></a> [readonly\_root\_filesystem](#input\_readonly\_root\_filesystem) | When this parameter is true, the container is given read-only access to its root file system | `bool` | `true` | no |
 | <a name="input_region"></a> [region](#input\_region) | The region this fargate cluster should reside in, defaults to the region used by the callee | `string` | `null` | no |
 | <a name="input_secrets"></a> [secrets](#input\_secrets) | Map containing secrets to expose to the docker container | `map(string)` | `{}` | no |
 | <a name="input_service_launch_type"></a> [service\_launch\_type](#input\_service\_launch\_type) | The service launch type: either FARGATE or EC2 | `string` | `"FARGATE"` | no |
