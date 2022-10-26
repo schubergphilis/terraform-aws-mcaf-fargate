@@ -1,5 +1,5 @@
 locals {
-  load_balancer = var.load_balancer_subnet_ids != null ? { create : true } : {}
+  load_balancer = var.load_balancer_subnet_ids != null ? { create : true } : null
   region        = var.region != null ? var.region : data.aws_region.current.name
 
   environment = [
