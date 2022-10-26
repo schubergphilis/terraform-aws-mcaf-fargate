@@ -76,7 +76,7 @@ resource "aws_security_group" "ecs" {
   tags        = var.tags
 
   dynamic "ingress" {
-    for_each = local.load_balancer
+    for_each = local.load_balancer_count
 
     content {
       description     = "Allow access from the ECS cluster"
