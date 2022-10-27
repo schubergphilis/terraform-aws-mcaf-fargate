@@ -3,8 +3,8 @@ locals {
     "${var.subdomain.name}.${data.aws_route53_zone.current[0].name}", "/[.]$/", "",
   ) : null
 
-  certificate_arn   = var.certificate_arn != null ? var.certificate_arn : var.protocol != "TCP" ? aws_acm_certificate.default[0].arn : null
-  certificate_count = var.certificate_arn == null && var.subdomain != null && var.protocol != "TCP" ? local.load_balancer_count : 0
+  certificate_arn   = var.certificate_arn != null ? var.certificate_arn : var.protocol == "HTTPS" ? aws_acm_certificate.default[0].arn : null
+  certificate_count = var.certificate_arn == null && var.subdomain != null && var.protocol == "HTTPS" ? local.load_balancer_count : 0
 }
 
 data "aws_route53_zone" "current" {

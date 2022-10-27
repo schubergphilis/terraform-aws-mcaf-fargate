@@ -131,8 +131,8 @@ variable "protocol" {
   description = "The target protocol"
 
   validation {
-    condition     = contains(["HTTP", "TCP"], var.protocol)
-    error_message = "Allowed values for protocol are \"HTTP\" or \"TCP\"."
+    condition     = (var.protocol == null || contains(["HTTP", "TCP"], var.protocol))
+    error_message = "Allowed values for protocol are null, \"HTTP\" or \"TCP\"."
   }
 }
 
