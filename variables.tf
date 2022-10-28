@@ -130,10 +130,10 @@ variable "protocol" {
   default     = null
   description = "The target protocol"
 
-  # validation {
-  #   condition     = (var.protocol == null || (coalesce(var.protocol, null)))
-  #   error_message = "Allowed values for protocol are null, \"HTTP\" or \"TCP\"."
-  # }
+  validation {
+    condition     = (var.protocol == null ? true : contains(["HTTP", "TCP"], var.protocol))
+    error_message = "Allowed values for protocol are null, \"HTTP\" or \"TCP\"."
+  }
 }
 
 variable "public_ip" {
