@@ -1,5 +1,5 @@
 locals {
-  load_balancer = var.load_balancer_subnet_ids != null ? { create : true } : {}
+  load_balancer = var.load_balancer_subnet_ids != null ? { create : true } : null
   region        = var.region != null ? var.region : data.aws_region.current.name
 
   environment = [
@@ -76,7 +76,7 @@ resource "aws_security_group" "ecs" {
   tags        = var.tags
 
   dynamic "ingress" {
-    for_each = local.load_balancer
+    for_each = aws_lb.default
 
     content {
       description     = "Allow access from the ECS cluster"
@@ -154,7 +154,7 @@ resource "aws_ecs_service" "default" {
   }
 
   dynamic "load_balancer" {
-    for_each = local.load_balancer
+    for_each = aws_lb.default
 
     content {
       target_group_arn = aws_lb_target_group.default.0.id
