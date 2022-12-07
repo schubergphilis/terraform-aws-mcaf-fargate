@@ -75,7 +75,7 @@ variable "image" {
 variable "kms_key_id" {
   type        = string
   default     = null
-  description = "The custom KMS key ID used encryption of the Cloudwatch log group"
+  description = "The custom KMS key ARN used encryption of the Cloudwatch log group"
 }
 
 variable "load_balancer_deregistration_delay" {
