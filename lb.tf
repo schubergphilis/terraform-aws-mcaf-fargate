@@ -45,6 +45,7 @@ resource "aws_security_group" "lb" {
 }
 
 resource "aws_eip" "lb" {
+  #checkov:skip=CKV2_AWS_19:IP's can also be used for non-EC2 resources
   count = length(local.eip_subnets)
 
   vpc  = true
@@ -57,10 +58,17 @@ resource "aws_lb" "default" {
   drop_invalid_header_fields       = var.protocol != "TCP" ? true : null
   internal                         = var.load_balancer_internal #tfsec:ignore:AWS005
   load_balancer_type               = var.protocol == "TCP" ? "network" : "application"
+  enable_deletion_protection       = var.load_balancer_deletion_protection
   enable_cross_zone_load_balancing = var.protocol == "TCP" ? var.enable_cross_zone_load_balancing : false
   subnets                          = var.load_balancer_eip ? null : var.load_balancer_subnet_ids
   security_groups                  = var.protocol != "TCP" ? [aws_security_group.lb[0].id] : null
   tags                             = var.tags
+
+  access_logs {
+    bucket  = var.load_balancer_logging.s3_bucket_arn
+    prefix  = var.load_balancer_logging.prefix
+    enabled = var.load_balancer_logging.enabled
+  }
 
   dynamic "subnet_mapping" {
     for_each = [for subnet_id in local.eip_subnets : {
