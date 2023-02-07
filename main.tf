@@ -45,7 +45,7 @@ resource "aws_cloudwatch_log_group" "default" {
 }
 
 resource "aws_ecs_task_definition" "default" {
-  #checkov:skip=CKV_AWS_249:Splitting up task_role_arn & execution_role_arn is not needed
+  #checkov:skip=CKV_AWS_249:We argue its not necessary to split up task_role_arn & execution_role_arn since in this case it's not adding much security or maintainability benefits
   family                   = var.name
   execution_role_arn       = module.task_execution_role.arn
   task_role_arn            = module.task_execution_role.arn
