@@ -104,7 +104,7 @@ variable "load_balancer_subnet_ids" {
 
 variable "load_balancer_deletion_protection" {
   type        = bool
-  description = "Control load balancer deletion protection"
+  description = "Set to true to enable deletion protection on the load balancer"
   default     = false
 }
 
