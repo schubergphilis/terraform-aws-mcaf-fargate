@@ -102,6 +102,26 @@ variable "load_balancer_subnet_ids" {
   description = "List of subnet IDs assigned to the LB"
 }
 
+variable "load_balancer_deletion_protection" {
+  type        = bool
+  description = "Set to true to enable deletion protection on the load balancer"
+  default     = false
+}
+
+variable "load_balancer_logging" {
+  type = object({
+    s3_bucket_arn = string,
+    enabled       = bool,
+    prefix        = string
+  })
+  default = {
+    s3_bucket_arn = null
+    enabled       = false
+    prefix        = null
+  }
+  description = "Access logs configuration for the load balancer"
+}
+
 variable "memory" {
   type        = number
   default     = 2048
