@@ -18,7 +18,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_task_execution_role"></a> [task\_execution\_role](#module\_task\_execution\_role) | github.com/schubergphilis/terraform-aws-mcaf-role | v0.3.2 |
+| <a name="module_task_execution_role"></a> [task\_execution\_role](#module\_task\_execution\_role) | github.com/schubergphilis/terraform-aws-mcaf-role | v0.3.3 |
 
 ## Resources
 
@@ -72,6 +72,7 @@
 | <a name="input_load_balancer_logging"></a> [load\_balancer\_logging](#input\_load\_balancer\_logging) | Access logs configuration for the load balancer | <pre>object({<br>    s3_bucket_arn = string,<br>    enabled       = bool,<br>    prefix        = string<br>  })</pre> | <pre>{<br>  "enabled": false,<br>  "prefix": null,<br>  "s3_bucket_arn": null<br>}</pre> | no |
 | <a name="input_load_balancer_subnet_ids"></a> [load\_balancer\_subnet\_ids](#input\_load\_balancer\_subnet\_ids) | List of subnet IDs assigned to the LB | `list(string)` | `null` | no |
 | <a name="input_memory"></a> [memory](#input\_memory) | Fargate instance memory to provision (in MiB) | `number` | `2048` | no |
+| <a name="input_permissions_boundary"></a> [permissions\_boundary](#input\_permissions\_boundary) | The permissions boundary to set to TaskExecutionRole | `string` | `null` | no |
 | <a name="input_port"></a> [port](#input\_port) | Port exposed by the docker image to redirect traffic to | `number` | `3000` | no |
 | <a name="input_postfix"></a> [postfix](#input\_postfix) | Postfix the role and policy names with Role and Policy | `bool` | `false` | no |
 | <a name="input_protocol"></a> [protocol](#input\_protocol) | The target protocol | `string` | `null` | no |
