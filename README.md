@@ -18,7 +18,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_task_execution_role"></a> [task\_execution\_role](#module\_task\_execution\_role) | github.com/schubergphilis/terraform-aws-mcaf-role | v0.3.2 |
+| <a name="module_task_execution_role"></a> [task\_execution\_role](#module\_task\_execution\_role) | github.com/schubergphilis/terraform-aws-mcaf-role | v0.3.3 |
 
 ## Resources
 
