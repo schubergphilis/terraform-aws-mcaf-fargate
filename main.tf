@@ -22,7 +22,7 @@ locals {
 data "aws_region" "current" {}
 
 module "task_execution_role" {
-  source                = "github.com/schubergphilis/terraform-aws-mcaf-role?ref=v0.3.2"
+  source                = "github.com/schubergphilis/terraform-aws-mcaf-role?ref=v0.3.3"
   name                  = "TaskExecutionRole-${var.name}"
   create_policy         = true
   principal_type        = "Service"
