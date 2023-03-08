@@ -133,6 +133,12 @@ variable "name" {
   description = "Name of the Fargate cluster"
 }
 
+variable "permissions_boundary" {
+  type        = string
+  default     = null
+  description = "The permissions boundary to set to TaskExecutionRole"
+}
+
 variable "port" {
   type        = number
   default     = 3000

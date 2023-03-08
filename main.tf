@@ -30,6 +30,7 @@ module "task_execution_role" {
   role_policy           = var.role_policy
   postfix               = var.postfix
   tags                  = var.tags
+  permissions_boundary  = var.permissions_boundary
 }
 
 resource "aws_iam_role_policy_attachment" "task_execution_role" {
