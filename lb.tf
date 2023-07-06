@@ -48,8 +48,8 @@ resource "aws_eip" "lb" {
   #checkov:skip=CKV2_AWS_19:IP's can also be used for non-EC2 resources
   count = length(local.eip_subnets)
 
-  vpc  = true
-  tags = var.tags
+  domain = "vpc"
+  tags   = var.tags
 }
 
 resource "aws_lb" "default" {
