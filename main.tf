@@ -61,12 +61,26 @@ resource "aws_ecs_task_definition" "default" {
     port                   = var.port
     cpu                    = var.cpu
     memory                 = var.memory
+    mountPoints            = [for p in var.mount_points : { sourceVolume = "${var.name}-efs" }]
     log_group              = aws_cloudwatch_log_group.default.name
     environment            = jsonencode(local.environment)
     secrets                = jsonencode(local.secrets)
     readonlyRootFilesystem = var.readonly_root_filesystem
     region                 = local.region
   })
+
+  dynamic "volume" {
+    for_each = var.efs_file_system_id == null ? [] : [1]
+
+    content {
+      name = "${var.name}-efs"
+      efs_volume_configuration {
+        file_system_id     = var.efs_file_system_id
+        root_directory     = var.efs_root_directory
+        transit_encryption = "ENABLED"
+      }
+    }
+  }
 
   tags = var.tags
 }
