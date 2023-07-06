@@ -1,4 +1,5 @@
 locals {
+  access_logging      = var.load_balancer_logging.enabled ? { create = true } : {}
   lb_hostname         = local.load_balancer != null ? aws_lb.default[0].dns_name : null
   http_listener_arn   = local.load_balancer != null && var.protocol != "TCP" ? aws_lb_listener.http[0].arn : null
   https_listener_arn  = local.load_balancer != null && var.protocol != "TCP" ? aws_lb_listener.https[0].arn : null
@@ -64,10 +65,14 @@ resource "aws_lb" "default" {
   security_groups                  = var.protocol != "TCP" ? [aws_security_group.lb[0].id] : null
   tags                             = var.tags
 
-  access_logs {
-    bucket  = var.load_balancer_logging.s3_bucket_arn
-    prefix  = var.load_balancer_logging.prefix
-    enabled = var.load_balancer_logging.enabled
+  dynamic "access_logs" {
+    for_each = local.access_logging
+
+    content {
+      bucket  = var.load_balancer_logging.s3_bucket_arn
+      prefix  = var.load_balancer_logging.prefix
+      enabled = var.load_balancer_logging.enabled
+    }
   }
 
   dynamic "subnet_mapping" {
