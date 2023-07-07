@@ -141,7 +141,9 @@ variable "memory" {
 }
 
 variable "mount_points" {
-  type        = list(map(string))
+  type = list(object({
+    containerPath = string
+  }))
   default     = []
   description = "The mount points for data volumes in your container. This parameter maps to Volumes in the --volume option to docker run"
 }

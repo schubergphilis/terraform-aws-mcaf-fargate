@@ -21,7 +21,8 @@ locals {
   updated_mount_points = [
     for mount in var.mount_points :
     {
-      sourceVolume = "${var.name}-efs"
+      sourceVolume  = "${var.name}-efs"
+      containerPath = mount.containerPath
     }
   ]
 }
