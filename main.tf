@@ -78,7 +78,7 @@ resource "aws_ecs_task_definition" "default" {
   })
 
   dynamic "volume" {
-    for_each = var.enable_efs == null ? [1] : []
+    for_each = var.enable_efs ? [1] : []
 
     content {
       name = "${var.name}-efs"
