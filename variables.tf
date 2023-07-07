@@ -33,21 +33,10 @@ variable "ecs_subnet_ids" {
   description = "List of subnet IDs assigned to ECS cluster"
 }
 
-variable "efs_file_system_id" {
-  type        = string
-  default     = null
-  description = "Attach an EFS file system to the ECS Task by this EFS id"
-}
-
-variable "efs_root_directory" {
-  type        = string
-  default     = "/opt/data"
-  description = "Optional. Root directory of EFS if attached"
-}
-
-variable "efs_access_point_id" {
-  type        = string
-  description = "EFS access point ID to use in authorizationConfig"
+variable "enable_efs" {
+  type        = bool
+  default     = true
+  description = "Enable EFS volume creation and attachment to the container"
 }
 
 variable "enable_container_insights" {
@@ -145,7 +134,7 @@ variable "memory" {
   description = "Fargate instance memory to provision (in MiB)"
 }
 
-variable "mount_points" {
+variable "efs_mount_points" {
   type = list(object({
     containerPath = string
   }))

@@ -19,7 +19,7 @@ locals {
   ]
 
   updated_mount_points = [
-    for mount in var.mount_points :
+    for mount in var.efs_mount_points :
     {
       sourceVolume  = "${var.name}-efs"
       containerPath = mount.containerPath
@@ -78,17 +78,17 @@ resource "aws_ecs_task_definition" "default" {
   })
 
   dynamic "volume" {
-    for_each = var.efs_file_system_id == null ? [] : [1]
+    for_each = var.enable_efs == null ? [1] : []
 
     content {
       name = "${var.name}-efs"
       efs_volume_configuration {
-        file_system_id          = var.efs_file_system_id
-        root_directory          = var.efs_root_directory
+        file_system_id          = aws_efs_file_system.default.id
+        root_directory          = "/opt/data"
         transit_encryption      = "ENABLED"
         transit_encryption_port = 2999
         authorization_config {
-          access_point_id = var.efs_access_point_id
+          access_point_id = aws_efs_access_point.default.id
           iam             = "ENABLED"
         }
       }
