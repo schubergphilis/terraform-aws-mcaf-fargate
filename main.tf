@@ -17,6 +17,13 @@ locals {
       valueFrom = v
     }
   ]
+
+  updated_mount_points = [
+    for mount in var.mount_points :
+    {
+      sourceVolume = "${var.name}-efs"
+    }
+  ]
 }
 
 data "aws_region" "current" {}
@@ -61,7 +68,7 @@ resource "aws_ecs_task_definition" "default" {
     port                   = var.port
     cpu                    = var.cpu
     memory                 = var.memory
-    mountPoints            = [for p in var.mount_points : { sourceVolume = "${var.name}-efs" }]
+    mountPoints            = local.updated_mount_points
     log_group              = aws_cloudwatch_log_group.default.name
     environment            = jsonencode(local.environment)
     secrets                = jsonencode(local.secrets)
