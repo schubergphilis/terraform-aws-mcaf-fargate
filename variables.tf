@@ -35,7 +35,7 @@ variable "ecs_subnet_ids" {
 
 variable "enable_efs" {
   type        = bool
-  default     = true
+  default     = false
   description = "Enable EFS volume creation and attachment to the container"
 }
 
