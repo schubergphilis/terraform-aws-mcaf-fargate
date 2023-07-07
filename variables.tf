@@ -42,7 +42,12 @@ variable "efs_file_system_id" {
 variable "efs_root_directory" {
   type        = string
   default     = "/opt/data"
-  description = "Root directory of EFS if attached"
+  description = "Optional. Root directory of EFS if attached"
+}
+
+variable "efs_access_point_id" {
+  type        = string
+  description = "EFS access point ID to use in authorizationConfig"
 }
 
 variable "enable_container_insights" {
