@@ -83,12 +83,12 @@ resource "aws_ecs_task_definition" "default" {
     content {
       name = "${var.name}-efs"
       efs_volume_configuration {
-        file_system_id          = aws_efs_file_system.default.id
+        file_system_id          = aws_efs_file_system.default[0].id
         root_directory          = "/opt/data"
         transit_encryption      = "ENABLED"
         transit_encryption_port = 2999
         authorization_config {
-          access_point_id = aws_efs_access_point.default.id
+          access_point_id = aws_efs_access_point.default[0].id
           iam             = "ENABLED"
         }
       }
