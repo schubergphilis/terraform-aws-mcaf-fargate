@@ -33,6 +33,12 @@ variable "ecs_subnet_ids" {
   description = "List of subnet IDs assigned to ECS cluster"
 }
 
+variable "enable_efs" {
+  type        = bool
+  default     = false
+  description = "Enable EFS volume creation and attachment to the container"
+}
+
 variable "enable_container_insights" {
   type        = bool
   default     = true
@@ -126,6 +132,14 @@ variable "memory" {
   type        = number
   default     = 2048
   description = "Fargate instance memory to provision (in MiB)"
+}
+
+variable "efs_mount_points" {
+  type = list(object({
+    containerPath = string
+  }))
+  default     = []
+  description = "The mount points for data volumes in your container. This parameter maps to Volumes in the --volume option to docker run"
 }
 
 variable "name" {

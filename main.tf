@@ -17,6 +17,14 @@ locals {
       valueFrom = v
     }
   ]
+
+  updated_mount_points = [
+    for mount in var.efs_mount_points :
+    {
+      sourceVolume  = "${var.name}-efs"
+      containerPath = mount.containerPath
+    }
+  ]
 }
 
 data "aws_region" "current" {}
@@ -61,12 +69,31 @@ resource "aws_ecs_task_definition" "default" {
     port                   = var.port
     cpu                    = var.cpu
     memory                 = var.memory
+    mountPoints            = local.updated_mount_points
     log_group              = aws_cloudwatch_log_group.default.name
     environment            = jsonencode(local.environment)
     secrets                = jsonencode(local.secrets)
     readonlyRootFilesystem = var.readonly_root_filesystem
     region                 = local.region
   })
+
+  dynamic "volume" {
+    for_each = var.enable_efs ? [1] : []
+
+    content {
+      name = "${var.name}-efs"
+      efs_volume_configuration {
+        file_system_id          = aws_efs_file_system.default[0].id
+        root_directory          = "/opt/data"
+        transit_encryption      = "ENABLED"
+        transit_encryption_port = 2999
+        authorization_config {
+          access_point_id = aws_efs_access_point.default[0].id
+          iam             = "ENABLED"
+        }
+      }
+    }
+  }
 
   tags = var.tags
 }
