@@ -28,7 +28,7 @@ resource "aws_security_group" "allow_efs_mount" {
     protocol    = "tcp"
     from_port   = 2999
     to_port     = 2999
-    cidr_blocks = var.cidr_blocks #tfsec:ignore:aws-vpc-no-public-ingress-sgr
+    security_groups = [aws_security_group.ecs.id]
   }
 
   ingress { # fails to mount if not added
@@ -36,6 +36,6 @@ resource "aws_security_group" "allow_efs_mount" {
     protocol    = "tcp"
     from_port   = 2049
     to_port     = 2049
-    cidr_blocks = var.cidr_blocks #tfsec:ignore:aws-vpc-no-public-ingress-sgr
+    security_groups = [aws_security_group.ecs.id]
   }
 }
