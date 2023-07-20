@@ -24,18 +24,18 @@ resource "aws_security_group" "allow_efs_mount" {
   vpc_id      = var.vpc_id
 
   ingress {
-    description = "EFS transit encryption port"
-    protocol    = "tcp"
-    from_port   = 2999
-    to_port     = 2999
+    description     = "EFS transit encryption port"
+    protocol        = "tcp"
+    from_port       = 2999
+    to_port         = 2999
     security_groups = [aws_security_group.ecs.id]
   }
 
   ingress { # fails to mount if not added
-    description = "Standard EFS port"
-    protocol    = "tcp"
-    from_port   = 2049
-    to_port     = 2049
+    description     = "Standard EFS port"
+    protocol        = "tcp"
+    from_port       = 2049
+    to_port         = 2049
     security_groups = [aws_security_group.ecs.id]
   }
 }
