@@ -18,10 +18,14 @@ locals {
     }
   ]
 
+  efs_name = "${var.name}-efs"
+
+  efs_tags = merge(var.tags, { "Name" = local.efs_name })
+
   updated_mount_points = [
     for mount in var.efs_mount_points :
     {
-      sourceVolume  = "${var.name}-efs"
+      sourceVolume  = local.efs_name
       containerPath = mount.containerPath
     }
   ]
@@ -81,7 +85,7 @@ resource "aws_ecs_task_definition" "default" {
     for_each = var.enable_efs ? [1] : []
 
     content {
-      name = "${var.name}-efs"
+      name = local.efs_name
       efs_volume_configuration {
         file_system_id          = aws_efs_file_system.default[0].id
         transit_encryption      = "ENABLED"

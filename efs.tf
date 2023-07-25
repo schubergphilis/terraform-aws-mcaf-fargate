@@ -1,8 +1,9 @@
 resource "aws_efs_file_system" "default" {
-  count      = var.enable_efs ? 1 : 0
-  encrypted  = true
-  kms_key_id = var.kms_key_id
-  tags       = var.tags
+  count          = var.enable_efs ? 1 : 0
+  encrypted      = true
+  kms_key_id     = var.kms_key_id
+  creation_token = local.efs_name
+  tags           = local.efs_tags
 }
 
 resource "aws_efs_mount_target" "mount" {
