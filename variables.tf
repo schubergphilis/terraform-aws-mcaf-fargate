@@ -142,6 +142,12 @@ variable "efs_mount_points" {
   description = "The mount points for data volumes in your container. This parameter maps to Volumes in the --volume option to docker run"
 }
 
+variable "efs_posix_user" {
+  type        = list(number)
+  default     = [1000, 1000]
+  description = "Posix uid and guid needs to be mapped at EFS Access Point"
+}
+
 variable "name" {
   type        = string
   description = "Name of the Fargate cluster"

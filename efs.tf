@@ -6,6 +6,38 @@ resource "aws_efs_file_system" "default" {
   tags           = local.efs_tags
 }
 
+data "aws_iam_policy_document" "policy" {
+  statement {
+    sid    = "EFS_Statement"
+    effect = "Allow"
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    actions = [
+      "elasticfilesystem:ClientMount",
+      "elasticfilesystem:ClientRootAccess",
+      "elasticfilesystem:ClientWrite"
+    ]
+
+    resources = [aws_efs_file_system.default[0].arn]
+
+    condition {
+      test     = "Bool"
+      variable = "aws:SecureTransport"
+      values   = ["true"]
+    }
+  }
+}
+
+resource "aws_efs_file_system_policy" "policy" {
+  count          = var.enable_efs ? 1 : 0
+  file_system_id = aws_efs_file_system.default[0].id
+  policy         = data.aws_iam_policy_document.policy.json
+}
+
 resource "aws_efs_mount_target" "mount" {
   count           = var.enable_efs ? length(var.ecs_subnet_ids) : 0
   file_system_id  = aws_efs_file_system.default[0].id
@@ -16,6 +48,21 @@ resource "aws_efs_mount_target" "mount" {
 resource "aws_efs_access_point" "default" {
   count          = var.enable_efs ? 1 : 0
   file_system_id = aws_efs_file_system.default[0].id
+  posix_user {
+    gid = var.efs_posix_user[0]
+    uid = var.efs_posix_user[1]
+  }
+  root_directory {
+    creation_info {
+      owner_gid   = var.efs_posix_user[0]
+      owner_uid   = var.efs_posix_user[1]
+      permissions = "0755"
+    }
+    # Setting a path is required for creation_info to ve valid.
+    # It will be mounted as the root for that EFS Access Point,
+    # so you won't actually see a /my-data folder in your ECS app.
+    path = "/my-data"
+  }
 }
 
 resource "aws_security_group" "allow_efs_mount" {
