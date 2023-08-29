@@ -143,9 +143,15 @@ variable "efs_mount_points" {
 }
 
 variable "efs_posix_user" {
-  type        = list(number)
-  default     = [1000, 1000]
-  description = "Posix uid and guid needs to be mapped at EFS Access Point"
+  type = number
+  default = 1000
+  description = "Posix uid needs to be mapped at EFS Access Point"
+}
+
+variable "efs_posix_group" {
+  type = number
+  default = 1000
+  description = "Posix gid needs to be mapped at EFS Access Point"
 }
 
 variable "name" {

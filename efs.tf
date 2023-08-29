@@ -49,13 +49,13 @@ resource "aws_efs_access_point" "default" {
   count          = var.enable_efs ? 1 : 0
   file_system_id = aws_efs_file_system.default[0].id
   posix_user {
-    gid = var.efs_posix_user[0]
-    uid = var.efs_posix_user[1]
+    gid = var.efs_posix_user
+    uid = var.efs_posix_group
   }
   root_directory {
     creation_info {
-      owner_gid   = var.efs_posix_user[0]
-      owner_uid   = var.efs_posix_user[1]
+      owner_gid   = var.efs_posix_user
+      owner_uid   = var.efs_posix_group
       permissions = "0755"
     }
     # Setting a path is required for creation_info to ve valid.
