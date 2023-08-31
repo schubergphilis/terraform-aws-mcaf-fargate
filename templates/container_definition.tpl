@@ -4,6 +4,7 @@
     "image": "${image}",
     "cpu": ${cpu},
     "memory": ${memory},
+    "mountPoints": ${jsonencode(mountPoints)},
     "networkMode": "awsvpc",
     "environment": ${environment},
     "readonlyRootFilesystem": ${readonlyRootFilesystem},
