@@ -7,6 +7,8 @@ resource "aws_efs_file_system" "default" {
 }
 
 data "aws_iam_policy_document" "policy" {
+  count = var.enable_efs ? 1 : 0
+
   statement {
     sid    = "EFS_Statement"
     effect = "Allow"
@@ -35,7 +37,7 @@ data "aws_iam_policy_document" "policy" {
 resource "aws_efs_file_system_policy" "policy" {
   count          = var.enable_efs ? 1 : 0
   file_system_id = aws_efs_file_system.default[0].id
-  policy         = data.aws_iam_policy_document.policy.json
+  policy         = data.aws_iam_policy_document.policy[0].json
 }
 
 resource "aws_efs_mount_target" "mount" {
