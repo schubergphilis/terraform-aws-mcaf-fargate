@@ -8,6 +8,7 @@ resource "aws_efs_file_system" "default" {
 
 data "aws_iam_policy_document" "policy" {
   count = var.enable_efs ? 1 : 0
+
   statement {
     sid    = "EFS_Statement"
     effect = "Allow"
@@ -80,8 +81,7 @@ resource "aws_security_group" "allow_efs_mount" {
     security_groups = [aws_security_group.ecs.id]
   }
 
-  ingress {
-    # fails to mount if not added
+  ingress { # fails to mount if not added
     description     = "Standard EFS port"
     protocol        = "tcp"
     from_port       = 2049
