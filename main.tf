@@ -68,6 +68,7 @@ resource "aws_ecs_task_definition" "default" {
   memory                   = var.memory
 
   container_definitions = templatefile("${path.module}/templates/container_definition.tpl", {
+    architecture           = upper(var.architecture)
     name                   = var.name
     image                  = var.image
     port                   = var.port
