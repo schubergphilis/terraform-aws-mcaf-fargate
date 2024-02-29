@@ -1,3 +1,13 @@
+variable "architecture" {
+  type        = string
+  default     = "x86_64"
+  description = "Instruction set architecture of the Fargate instance"
+
+  validation {
+    condition     = contains(["arm64", "x86_64"], var.architecture)
+    error_message = "Allowed values are \"arm64\" or \"x86_64\"."
+  }
+}
 variable "capacity_provider_asg_arn" {
   type        = string
   default     = null

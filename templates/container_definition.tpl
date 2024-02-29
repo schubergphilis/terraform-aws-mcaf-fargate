@@ -8,6 +8,7 @@
     "networkMode": "awsvpc",
     "environment": ${environment},
     "readonlyRootFilesystem": ${readonlyRootFilesystem},
+    "runtimePlatform": { "cpuArchitecture": "${architecture}" },
     "secrets": ${secrets},
     "logConfiguration": {
         "logDriver": "awslogs",
