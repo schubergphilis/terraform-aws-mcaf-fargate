@@ -16,9 +16,13 @@ resource "aws_route53_record" "default" {
   count   = var.subdomain != null ? local.load_balancer_count : 0
   zone_id = data.aws_route53_zone.current[0].zone_id
   name    = local.application_fqdn
-  type    = "CNAME"
-  ttl     = "5"
-  records = [aws_lb.default[0].dns_name]
+  type    = "A"
+
+  alias {
+    name                   = aws_lb.default[0].dns_name
+    zone_id                = aws_lb.default[0].zone_id
+    evaluate_target_health = true
+  }
 }
 
 resource "aws_acm_certificate" "default" {
