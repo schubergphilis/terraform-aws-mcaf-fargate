@@ -83,6 +83,12 @@ variable "health_check" {
   description = "Health check settings for the container"
 }
 
+variable "health_check_grace_period_seconds" {
+  description = "Seconds to ignore failing load balancer health checks on newly instantiated tasks to prevent premature shutdown. Only valid for services configured to use load balancers."
+  type        = number
+  default     = 0
+}
+
 variable "image" {
   type        = string
   description = "Docker image to run in the ECS cluster"

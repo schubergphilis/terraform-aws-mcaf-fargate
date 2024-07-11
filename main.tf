@@ -173,12 +173,13 @@ resource "aws_ecs_cluster_capacity_providers" "default" {
 }
 
 resource "aws_ecs_service" "default" {
-  name            = var.name
-  cluster         = aws_ecs_cluster.default.id
-  task_definition = aws_ecs_task_definition.default.arn
-  desired_count   = var.desired_count
-  launch_type     = var.service_launch_type
-  propagate_tags  = "TASK_DEFINITION"
+  name                              = var.name
+  cluster                           = aws_ecs_cluster.default.id
+  task_definition                   = aws_ecs_task_definition.default.arn
+  desired_count                     = var.desired_count
+  launch_type                       = var.service_launch_type
+  propagate_tags                    = "TASK_DEFINITION"
+  health_check_grace_period_seconds = var.health_check_grace_period_seconds
 
   network_configuration {
     security_groups  = [aws_security_group.ecs.id]
