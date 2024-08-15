@@ -126,8 +126,8 @@ variable "load_balancer_subnet_ids" {
 
 variable "load_balancer_deletion_protection" {
   type        = bool
+  default     = true
   description = "Set to true to enable deletion protection on the load balancer"
-  default     = false
 }
 
 variable "load_balancer_logging" {
@@ -142,6 +142,12 @@ variable "load_balancer_logging" {
     prefix        = null
   }
   description = "Access logs configuration for the load balancer"
+}
+
+variable "log_retention_days" {
+  type        = number
+  description = "The cloudwatch log group retention in days"
+  default     = 365
 }
 
 variable "memory" {
@@ -261,8 +267,8 @@ variable "subdomain" {
 
 variable "tags" {
   type        = map(string)
-  description = "A mapping of tags to assign to the resources"
   default     = {}
+  description = "A mapping of tags to assign to the resources"
 }
 
 variable "target_group_stickiness" {

@@ -1,5 +1,9 @@
 # terraform-aws-mcaf-fargate
 
+Terraform module to create an ECS Fargate cluster with an Application Load Balancer and EFS volume (optional).
+
+IMPORTANT: We do not pin modules to versions in our examples. We highly recommend that in your code you pin the version to the exact version you are using so that your infrastructure remains stable.
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
@@ -75,13 +79,15 @@
 | <a name="input_enable_efs"></a> [enable\_efs](#input\_enable\_efs) | Enable EFS volume creation and attachment to the container | `bool` | `false` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment variables defined in the docker container | `map(string)` | `{}` | no |
 | <a name="input_health_check"></a> [health\_check](#input\_health\_check) | Health check settings for the container | <pre>object({<br>    healthy_threshold   = number,<br>    interval            = number,<br>    path                = string,<br>    unhealthy_threshold = number<br>  })</pre> | <pre>{<br>  "healthy_threshold": 3,<br>  "interval": 30,<br>  "path": null,<br>  "unhealthy_threshold": 3<br>}</pre> | no |
+| <a name="input_health_check_grace_period_seconds"></a> [health\_check\_grace\_period\_seconds](#input\_health\_check\_grace\_period\_seconds) | Seconds to ignore failing load balancer health checks on newly instantiated tasks to prevent premature shutdown. Only valid for services configured to use load balancers. | `number` | `null` | no |
 | <a name="input_kms_key_id"></a> [kms\_key\_id](#input\_kms\_key\_id) | The custom KMS key ARN used encryption of the Cloudwatch log group | `string` | `null` | no |
-| <a name="input_load_balancer_deletion_protection"></a> [load\_balancer\_deletion\_protection](#input\_load\_balancer\_deletion\_protection) | Set to true to enable deletion protection on the load balancer | `bool` | `false` | no |
+| <a name="input_load_balancer_deletion_protection"></a> [load\_balancer\_deletion\_protection](#input\_load\_balancer\_deletion\_protection) | Set to true to enable deletion protection on the load balancer | `bool` | `true` | no |
 | <a name="input_load_balancer_deregistration_delay"></a> [load\_balancer\_deregistration\_delay](#input\_load\_balancer\_deregistration\_delay) | The amount of time before a target is deregistered when draining | `number` | `300` | no |
 | <a name="input_load_balancer_eip"></a> [load\_balancer\_eip](#input\_load\_balancer\_eip) | Whether to create Elastic IPs for the load balancer | `bool` | `false` | no |
 | <a name="input_load_balancer_internal"></a> [load\_balancer\_internal](#input\_load\_balancer\_internal) | Set to true to create an internal load balancer | `bool` | `false` | no |
 | <a name="input_load_balancer_logging"></a> [load\_balancer\_logging](#input\_load\_balancer\_logging) | Access logs configuration for the load balancer | <pre>object({<br>    s3_bucket_arn = string,<br>    enabled       = bool,<br>    prefix        = string<br>  })</pre> | <pre>{<br>  "enabled": false,<br>  "prefix": null,<br>  "s3_bucket_arn": null<br>}</pre> | no |
 | <a name="input_load_balancer_subnet_ids"></a> [load\_balancer\_subnet\_ids](#input\_load\_balancer\_subnet\_ids) | List of subnet IDs assigned to the LB | `list(string)` | `null` | no |
+| <a name="input_log_retention_days"></a> [log\_retention\_days](#input\_log\_retention\_days) | The cloudwatch log group retention in days | `number` | `365` | no |
 | <a name="input_memory"></a> [memory](#input\_memory) | Fargate instance memory to provision (in MiB) | `number` | `2048` | no |
 | <a name="input_permissions_boundary"></a> [permissions\_boundary](#input\_permissions\_boundary) | The permissions boundary to set to TaskExecutionRole | `string` | `null` | no |
 | <a name="input_port"></a> [port](#input\_port) | Port exposed by the docker image to redirect traffic to | `number` | `3000` | no |
@@ -114,3 +120,7 @@
 | <a name="output_task_execution_role_arn"></a> [task\_execution\_role\_arn](#output\_task\_execution\_role\_arn) | ARN of the execution role |
 | <a name="output_tcp_listener_arn"></a> [tcp\_listener\_arn](#output\_tcp\_listener\_arn) | The ARN of the TCP listener |
 <!-- END_TF_DOCS -->
+
+## Licensing
+
+100% Open Source and licensed under the Apache License Version 2.0. See [LICENSE](https://github.com/schubergphilis/terraform-aws-mcaf-fargate/blob/master/LICENSE) for full details.
