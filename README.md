@@ -1,5 +1,9 @@
 # terraform-aws-mcaf-fargate
 
+Terraform module to create an ECS Fargate cluster with an Application Load Balancer and EFS volume (optional).
+
+IMPORTANT: We do not pin modules to versions in our examples. We highly recommend that in your code you pin the version to the exact version you are using so that your infrastructure remains stable.
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
@@ -114,3 +118,7 @@
 | <a name="output_task_execution_role_arn"></a> [task\_execution\_role\_arn](#output\_task\_execution\_role\_arn) | ARN of the execution role |
 | <a name="output_tcp_listener_arn"></a> [tcp\_listener\_arn](#output\_tcp\_listener\_arn) | The ARN of the TCP listener |
 <!-- END_TF_DOCS -->
+
+## Licensing
+
+100% Open Source and licensed under the Apache License Version 2.0. See [LICENSE](https://github.com/schubergphilis/terraform-aws-mcaf-fargate/blob/master/LICENSE) for full details.
