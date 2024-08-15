@@ -37,9 +37,9 @@ module "pets" {
   source                   = "../.."
   name                     = "fargate"
   image                    = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${data.aws_region.current.name}.amazonaws.com/pets:latest"
-  ecs_subnet_ids           = module.vpc.private_subnet_ids
-  load_balancer_subnet_ids = module.vpc.public_subnet_ids
+  ecs_subnet_ids           = module.vpc.private_subnets
+  load_balancer_subnet_ids = module.vpc.public_subnets
   protocol                 = "HTTP"
   role_policy              = data.aws_iam_policy_document.task_execution_role.json
-  vpc_id                   = module.vpc.id
+  vpc_id                   = module.vpc.vpc_id
 }

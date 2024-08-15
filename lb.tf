@@ -13,6 +13,7 @@ locals {
 }
 
 resource "aws_security_group" "lb" {
+  #checkov:skip=CKV2_AWS_5: False positive finding, the security group is attached.
   count       = var.protocol != "TCP" ? local.load_balancer_count : 0
   name        = "${var.name}-lb"
   description = "Controls access to the LB"
@@ -24,7 +25,8 @@ resource "aws_security_group" "lb" {
     protocol    = "tcp"
     from_port   = 80
     to_port     = 80
-    cidr_blocks = var.cidr_blocks #tfsec:ignore:aws-vpc-no-public-ingress-sgr
+    #checkov:skip=CKV_AWS_260: Port 80 (HTTP) is redirected to 443 (HTTPS)
+    cidr_blocks = var.cidr_blocks
   }
 
   ingress {
@@ -32,7 +34,7 @@ resource "aws_security_group" "lb" {
     protocol    = "tcp"
     from_port   = 443
     to_port     = 443
-    cidr_blocks = var.cidr_blocks #tfsec:ignore:aws-vpc-no-public-ingress-sgr
+    cidr_blocks = var.cidr_blocks
   }
 
   egress {
@@ -54,6 +56,7 @@ resource "aws_eip" "lb" {
 }
 
 resource "aws_lb" "default" {
+  #checkov:skip=CKV2_AWS_28:WAF not implemnted (yet)
   count                            = local.load_balancer_count
   name                             = var.name
   drop_invalid_header_fields       = var.protocol != "TCP" ? true : null
