@@ -116,7 +116,7 @@ resource "aws_security_group" "ecs" {
       protocol        = "tcp"
       from_port       = var.port
       to_port         = var.port
-      security_groups = var.protocol != "TCP" ? [aws_security_group.lb.0.id] : null
+      security_groups = var.protocol != "TCP" ? [aws_security_group.lb[0].id] : null
       cidr_blocks     = var.protocol == "TCP" ? var.cidr_blocks : null
     }
   }
@@ -191,7 +191,7 @@ resource "aws_ecs_service" "default" {
     for_each = aws_lb.default
 
     content {
-      target_group_arn = aws_lb_target_group.default.0.id
+      target_group_arn = aws_lb_target_group.default[0].id
       container_name   = "app-${var.name}"
       container_port   = var.port
     }
