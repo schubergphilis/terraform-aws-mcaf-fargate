@@ -57,3 +57,8 @@ output "tcp_listener_arn" {
   value       = local.tcp_listener_arn
   description = "The ARN of the TCP listener"
 }
+
+output "ecs_service_arn" {
+  value       = aws_ecs_service.default.id
+  description = "The ARN of the ECS service"
+}
