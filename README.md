@@ -108,6 +108,7 @@ IMPORTANT: We do not pin modules to versions in our examples. We highly recommen
 | Name | Description |
 |------|-------------|
 | <a name="output_cluster_arn"></a> [cluster\_arn](#output\_cluster\_arn) | The ARN of the ECS cluster |
+| <a name="output_ecs_service_arn"></a> [ecs\_service\_arn](#output\_ecs\_service\_arn) | The ARN of the ECS service |
 | <a name="output_fqdn"></a> [fqdn](#output\_fqdn) | FQDN of the route53 endpoint |
 | <a name="output_hostname"></a> [hostname](#output\_hostname) | Hostname of the Application load balancer |
 | <a name="output_http_listener_arn"></a> [http\_listener\_arn](#output\_http\_listener\_arn) | The ARN of the HTTP listener |
