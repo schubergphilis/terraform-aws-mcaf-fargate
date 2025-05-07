@@ -67,6 +67,12 @@ variable "enable_cross_zone_load_balancing" {
   description = "Enable cross-zone load balancing of the (network) load balancer"
 }
 
+variable "entrypoint" {
+  type        = list(string)
+  default     = []
+  description = "The entry point that's passed to the container"
+}
+
 variable "environment" {
   type        = map(string)
   default     = {}
