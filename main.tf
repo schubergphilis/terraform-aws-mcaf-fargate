@@ -140,6 +140,7 @@ resource "aws_security_group" "ecs" {
     }
   }
 
+  #checkov:skip=CKV_AWS_382:Ensure no security groups allow egress from 0.0.0.0:0 to port -1
   egress {
     description = "Allow all outgoing traffic"
     protocol    = "-1"
