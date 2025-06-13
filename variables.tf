@@ -252,7 +252,7 @@ variable "service_launch_type" {
 
 variable "ssl_policy" {
   type        = string
-  default     = "ELBSecurityPolicy-TLS-1-2-Ext-2018-06"
+  default     = "ELBSecurityPolicy-TLS13-1-2-Ext2-2021-06"
   description = "SSL Policy for the LB Listener"
 }
 
