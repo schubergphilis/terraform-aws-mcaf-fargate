@@ -103,6 +103,7 @@ resource "aws_ecs_task_definition" "default" {
 }
 
 resource "aws_security_group" "ecs" {
+  #checkov:skip=CKV_AWS_382: No problem with outgoing traffic to the internet
   name        = "${var.name}-ecs"
   description = "Allow access to and from the ECS cluster"
   vpc_id      = var.vpc_id
