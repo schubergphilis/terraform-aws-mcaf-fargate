@@ -35,7 +35,7 @@ data "aws_region" "current" {}
 
 module "task_execution_role" {
   source  = "schubergphilis/mcaf-role/aws"
-  version = "~> 0.4.0"
+  version = "~> 0.5.3"
 
   name                  = "TaskExecutionRole-${var.name}"
   create_policy         = true
@@ -129,7 +129,7 @@ resource "aws_security_group" "ecs" {
     protocol    = "-1"
     from_port   = 0
     to_port     = 0
-    cidr_blocks = ["0.0.0.0/0"] #tfsec:ignore:aws-vpc-no-public-egress-sgr
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   lifecycle {
