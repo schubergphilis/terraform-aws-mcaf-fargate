@@ -51,7 +51,7 @@ resource "aws_route53_record" "validation" {
   records = [each.value.record]
   ttl     = 60
   type    = each.value.type
-  zone_id = data.aws_route53_zone.current.zone_id
+  zone_id = data.aws_route53_zone.current[0].zone_id
 }
 
 resource "aws_acm_certificate_validation" "default" {

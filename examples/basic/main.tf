@@ -2,7 +2,6 @@ provider "aws" {
   region = "eu-west-1"
 }
 
-data "aws_availability_zones" "available" {}
 data "aws_region" "current" {}
 data "aws_caller_identity" "current" {}
 
@@ -36,5 +35,5 @@ module "pets" {
   load_balancer_subnet_ids = module.vpc.public_subnet_ids
   protocol                 = "HTTP"
   role_policy              = data.aws_iam_policy_document.task_execution_role.json
-  vpc_id                   = module.vpc.vpc_id
+  vpc_id                   = module.vpc.id
 }
