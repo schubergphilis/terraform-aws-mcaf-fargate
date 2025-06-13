@@ -252,8 +252,13 @@ variable "service_launch_type" {
 
 variable "ssl_policy" {
   type        = string
-  default     = "ELBSecurityPolicy-TLS-1-2-Ext-2018-06"
+  default     = "ELBSecurityPolicy-TLS13-1-2-Ext2-2021-06"
   description = "SSL Policy for the LB Listener"
+
+  validation {
+    condition     = contains(["LBSecurityPolicy-TLS13-1-2-Ext1-2021-06", "ELBSecurityPolicy-TLS13-1-2-Ext2-2021-06", "ELBSecurityPolicy-TLS13-1-2-Res-2021-06", "ELBSecurityPolicy-TLS13-1-2-2021-06", "ELBSecurityPolicy-TLS13-1-3-2021-06"], var.ssl_policy)
+    error_message = "Allowed values for ssl_policy are \"LBSecurityPolicy-TLS13-1-2-Ext1-2021-06\", \"ELBSecurityPolicy-TLS13-1-2-Ext2-2021-06\", \"ELBSecurityPolicy-TLS13-1-2-Res-2021-06\", \"ELBSecurityPolicy-TLS13-1-2-2021-06\" or \"ELBSecurityPolicy-TLS13-1-3-2021-06\"."
+  }
 }
 
 variable "subdomain" {
