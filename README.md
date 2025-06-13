@@ -22,7 +22,7 @@ IMPORTANT: We do not pin modules to versions in our examples. We highly recommen
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_task_execution_role"></a> [task\_execution\_role](#module\_task\_execution\_role) | schubergphilis/mcaf-role/aws | ~> 0.4.0 |
+| <a name="module_task_execution_role"></a> [task\_execution\_role](#module\_task\_execution\_role) | schubergphilis/mcaf-role/aws | ~> 0.5.3 |
 
 ## Resources
 
