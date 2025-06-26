@@ -99,7 +99,7 @@ IMPORTANT: We do not pin modules to versions in our examples. We highly recommen
 | <a name="input_region"></a> [region](#input\_region) | The region this fargate cluster should reside in, defaults to the region used by the callee | `string` | `null` | no |
 | <a name="input_secrets"></a> [secrets](#input\_secrets) | Map containing secrets to expose to the docker container | `map(string)` | `{}` | no |
 | <a name="input_service_launch_type"></a> [service\_launch\_type](#input\_service\_launch\_type) | The service launch type: either FARGATE or EC2 | `string` | `"FARGATE"` | no |
-| <a name="input_ssl_policy"></a> [ssl\_policy](#input\_ssl\_policy) | SSL Policy for the LB Listener | `string` | `"ELBSecurityPolicy-TLS13-1-2-Ext2-2021-06"` | no |
+| <a name="input_ssl_policy"></a> [ssl\_policy](#input\_ssl\_policy) | SSL Policy for the LB Listener | `string` | `"ELBSecurityPolicy-TLS13-1-2-2021-06"` | no |
 | <a name="input_subdomain"></a> [subdomain](#input\_subdomain) | The DNS subdomain and zone ID for the LB | <pre>object({<br/>    name    = string,<br/>    zone_id = string<br/>  })</pre> | `null` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | A mapping of tags to assign to the resources | `map(string)` | `{}` | no |
 | <a name="input_target_group_stickiness"></a> [target\_group\_stickiness](#input\_target\_group\_stickiness) | Whether to bind a client’s session to a specific instance within the target group | `bool` | `false` | no |
