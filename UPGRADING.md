@@ -6,7 +6,16 @@ This document captures required refactoring on your part when upgrading to a mod
 
 Initial release of the module. These changes are based on the last tag version (`v0.16.5`)
 
-### Behaviour (v1.0.0)
+operating_system_family
 
-- The `load_balancer_deletion_protection` variable, is now `true` by default.
-- The Cloudwatch `log_retention_days` is now configurable and the default value is updated from 30 to 365 days.
+### Key Changes
+
+Mainly security related changes and some minor refactoring.
+
+#### Variables
+
+The following variables have been modified:
+
+- `load_balancer_deletion_protection` is now `true` by default.
+- `log_retention_days` is now configurable and the default value is updated from 30 to 365 days.
+- `ssl_policy` is now `ELBSecurityPolicy-TLS13-1-2-2021-06` by default.
