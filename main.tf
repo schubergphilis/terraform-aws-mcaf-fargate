@@ -61,7 +61,9 @@ locals {
 data "aws_region" "current" {}
 
 module "task_execution_role" {
-  source                = "github.com/schubergphilis/terraform-aws-mcaf-role?ref=v0.3.3"
+  source  = "schubergphilis/mcaf-role/aws"
+  version = "~> 0.5.3"
+
   name                  = "TaskExecutionRole-${var.name}"
   create_policy         = true
   principal_type        = "Service"
@@ -122,6 +124,7 @@ resource "aws_ecs_task_definition" "default" {
 }
 
 resource "aws_security_group" "ecs" {
+  #checkov:skip=CKV_AWS_382: No problem with outgoing traffic to the internet
   name        = "${var.name}-ecs"
   description = "Allow access to and from the ECS cluster"
   vpc_id      = var.vpc_id
@@ -146,7 +149,7 @@ resource "aws_security_group" "ecs" {
     protocol    = "-1"
     from_port   = 0
     to_port     = 0
-    cidr_blocks = ["0.0.0.0/0"] #tfsec:ignore:aws-vpc-no-public-egress-sgr
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   lifecycle {

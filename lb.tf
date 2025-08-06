@@ -100,6 +100,7 @@ resource "aws_lb_listener" "http" {
   load_balancer_arn = aws_lb.default[0].id
   port              = 80
   protocol          = "HTTP"
+  tags              = var.tags
 
   default_action {
     type = "redirect"
@@ -146,6 +147,7 @@ resource "aws_lb_listener" "https" {
   protocol          = "HTTPS"
   ssl_policy        = var.ssl_policy
   certificate_arn   = local.certificate_arn
+  tags              = var.tags
 
   default_action {
     type             = "forward"

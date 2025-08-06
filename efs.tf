@@ -89,3 +89,13 @@ resource "aws_security_group" "allow_efs_mount" {
     security_groups = [aws_security_group.ecs.id]
   }
 }
+
+resource "aws_efs_backup_policy" "default" {
+  count = var.enable_efs ? 1 : 0
+
+  file_system_id = aws_efs_file_system.default[0].id
+
+  backup_policy {
+    status = "ENABLED"
+  }
+}
