@@ -70,6 +70,7 @@ IMPORTANT: We do not pin modules to versions in our examples. We highly recommen
 | <a name="input_capacity_provider_asg_arn"></a> [capacity\_provider\_asg\_arn](#input\_capacity\_provider\_asg\_arn) | ARN of Autoscaling Group for capacity provider | `string` | `null` | no |
 | <a name="input_certificate_arn"></a> [certificate\_arn](#input\_certificate\_arn) | Certificate ARN for the LB Listener | `string` | `null` | no |
 | <a name="input_cidr_blocks"></a> [cidr\_blocks](#input\_cidr\_blocks) | CIDR block to allow access to the LB | `list(string)` | <pre>[<br/>  "0.0.0.0/0"<br/>]</pre> | no |
+| <a name="input_command"></a> [command](#input\_command) | The command to execute inside the container | `list(string)` | `[]` | no |
 | <a name="input_cpu"></a> [cpu](#input\_cpu) | Fargate instance CPU units to provision (1 vCPU = 1024 CPU units) | `number` | `1024` | no |
 | <a name="input_desired_count"></a> [desired\_count](#input\_desired\_count) | Desired number of docker containers to run | `number` | `1` | no |
 | <a name="input_efs_mount_points"></a> [efs\_mount\_points](#input\_efs\_mount\_points) | The mount points for data volumes in your container. This parameter maps to Volumes in the --volume option to docker run | <pre>list(object({<br/>    containerPath = string<br/>  }))</pre> | `[]` | no |
@@ -78,6 +79,7 @@ IMPORTANT: We do not pin modules to versions in our examples. We highly recommen
 | <a name="input_enable_container_insights"></a> [enable\_container\_insights](#input\_enable\_container\_insights) | Enable Cloudwatch Container Insights | `bool` | `true` | no |
 | <a name="input_enable_cross_zone_load_balancing"></a> [enable\_cross\_zone\_load\_balancing](#input\_enable\_cross\_zone\_load\_balancing) | Enable cross-zone load balancing of the (network) load balancer | `bool` | `false` | no |
 | <a name="input_enable_efs"></a> [enable\_efs](#input\_enable\_efs) | Enable EFS volume creation and attachment to the container | `bool` | `false` | no |
+| <a name="input_entrypoint"></a> [entrypoint](#input\_entrypoint) | The entry point that's passed to the container | `list(string)` | `[]` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment variables defined in the docker container | `map(string)` | `{}` | no |
 | <a name="input_health_check"></a> [health\_check](#input\_health\_check) | Health check settings for the container | <pre>object({<br/>    healthy_threshold   = number,<br/>    interval            = number,<br/>    path                = string,<br/>    unhealthy_threshold = number<br/>  })</pre> | <pre>{<br/>  "healthy_threshold": 3,<br/>  "interval": 30,<br/>  "path": null,<br/>  "unhealthy_threshold": 3<br/>}</pre> | no |
 | <a name="input_health_check_grace_period_seconds"></a> [health\_check\_grace\_period\_seconds](#input\_health\_check\_grace\_period\_seconds) | Seconds to ignore failing load balancer health checks on newly instantiated tasks to prevent premature shutdown. Only valid for services configured to use load balancers. | `number` | `null` | no |
@@ -90,6 +92,7 @@ IMPORTANT: We do not pin modules to versions in our examples. We highly recommen
 | <a name="input_load_balancer_subnet_ids"></a> [load\_balancer\_subnet\_ids](#input\_load\_balancer\_subnet\_ids) | List of subnet IDs assigned to the LB | `list(string)` | `null` | no |
 | <a name="input_log_retention_days"></a> [log\_retention\_days](#input\_log\_retention\_days) | The cloudwatch log group retention in days | `number` | `365` | no |
 | <a name="input_memory"></a> [memory](#input\_memory) | Fargate instance memory to provision (in MiB) | `number` | `2048` | no |
+| <a name="input_operating_system_family"></a> [operating\_system\_family](#input\_operating\_system\_family) | The operating system family of the Fargate instance | `string` | `"LINUX"` | no |
 | <a name="input_permissions_boundary"></a> [permissions\_boundary](#input\_permissions\_boundary) | The permissions boundary to set to TaskExecutionRole | `string` | `null` | no |
 | <a name="input_port"></a> [port](#input\_port) | Port exposed by the docker image to redirect traffic to | `number` | `3000` | no |
 | <a name="input_postfix"></a> [postfix](#input\_postfix) | Postfix the role and policy names with Role and Policy | `bool` | `false` | no |

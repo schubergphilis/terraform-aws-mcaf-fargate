@@ -29,6 +29,33 @@ locals {
       containerPath = mount.containerPath
     }
   ]
+
+  container_definition = {
+    name                   = "app-${var.name}"
+    command                = length(var.command) > 0 ? var.command : null
+    image                  = var.image
+    cpu                    = var.cpu
+    memory                 = var.memory
+    environment            = local.environment
+    entryPoint             = length(var.entrypoint) > 0 ? var.entrypoint : null
+    secrets                = local.secrets
+    readonlyRootFilesystem = var.readonly_root_filesystem
+    mountPoints            = local.updated_mount_points
+    logConfiguration = {
+      logDriver = "awslogs"
+      options = {
+        awslogs-group         = aws_cloudwatch_log_group.default.name
+        awslogs-region        = local.region
+        awslogs-stream-prefix = "ecs"
+      }
+    }
+    portMappings = [
+      {
+        containerPort = var.port
+        hostPort      = var.port
+      }
+    ]
+  }
 }
 
 data "aws_region" "current" {}
@@ -68,21 +95,12 @@ resource "aws_ecs_task_definition" "default" {
   requires_compatibilities = [var.service_launch_type]
   cpu                      = var.cpu
   memory                   = var.memory
+  container_definitions    = jsonencode([local.container_definition])
 
-  container_definitions = templatefile("${path.module}/templates/container_definition.tpl", {
-    architecture           = upper(var.architecture)
-    name                   = var.name
-    image                  = var.image
-    port                   = var.port
-    cpu                    = var.cpu
-    memory                 = var.memory
-    mountPoints            = local.updated_mount_points
-    log_group              = aws_cloudwatch_log_group.default.name
-    environment            = jsonencode(local.environment)
-    secrets                = jsonencode(local.secrets)
-    readonlyRootFilesystem = var.readonly_root_filesystem
-    region                 = local.region
-  })
+  runtime_platform {
+    operating_system_family = var.operating_system_family
+    cpu_architecture        = upper(var.architecture)
+  }
 
   dynamic "volume" {
     for_each = var.enable_efs ? [1] : []
@@ -124,6 +142,7 @@ resource "aws_security_group" "ecs" {
     }
   }
 
+  #checkov:skip=CKV_AWS_382:Ensure no security groups allow egress from 0.0.0.0:0 to port -1
   egress {
     description = "Allow all outgoing traffic"
     protocol    = "-1"

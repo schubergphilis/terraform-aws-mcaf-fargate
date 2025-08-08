@@ -26,6 +26,12 @@ variable "cidr_blocks" {
   description = "CIDR block to allow access to the LB"
 }
 
+variable "command" {
+  type        = list(string)
+  default     = []
+  description = "The command to execute inside the container"
+}
+
 variable "cpu" {
   type        = number
   default     = 1024
@@ -59,6 +65,12 @@ variable "enable_cross_zone_load_balancing" {
   type        = bool
   default     = false
   description = "Enable cross-zone load balancing of the (network) load balancer"
+}
+
+variable "entrypoint" {
+  type        = list(string)
+  default     = []
+  description = "The entry point that's passed to the container"
 }
 
 variable "environment" {
@@ -214,6 +226,17 @@ variable "public_ip" {
   type        = bool
   default     = false
   description = "Assign a public ip to the service"
+}
+
+variable "operating_system_family" {
+  type        = string
+  default     = "LINUX"
+  description = "The operating system family of the Fargate instance"
+
+  validation {
+    condition     = contains(["LINUX", "WINDOWS_SERVER_2019_FULL", "WINDOWS_SERVER_2019_CORE", "WINDOWS_SERVER_2022_FULL", "WINDOWS_SERVER_2022_CORE"], var.operating_system_family)
+    error_message = "Allowed values are \"LINUX\", \"WINDOWS_SERVER_2019_FULL\", \"WINDOWS_SERVER_2019_CORE\", \"WINDOWS_SERVER_2022_FULL\", or \"WINDOWS_SERVER_2022_CORE\"."
+  }
 }
 
 variable "readonly_root_filesystem" {
