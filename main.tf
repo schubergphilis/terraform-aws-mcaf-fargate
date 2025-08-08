@@ -95,8 +95,7 @@ resource "aws_ecs_task_definition" "default" {
   requires_compatibilities = [var.service_launch_type]
   cpu                      = var.cpu
   memory                   = var.memory
-
-  container_definitions = jsonencode([local.container_definition])
+  container_definitions    = jsonencode([local.container_definition])
 
   runtime_platform {
     operating_system_family = var.operating_system_family
