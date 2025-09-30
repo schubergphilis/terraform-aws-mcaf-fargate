@@ -26,7 +26,9 @@ resource "aws_route53_record" "default" {
 }
 
 resource "aws_acm_certificate" "default" {
-  count             = local.certificate_count
+  count = local.certificate_count
+
+  region            = var.region
   domain_name       = local.application_fqdn
   validation_method = "DNS"
   tags              = var.tags
@@ -55,7 +57,9 @@ resource "aws_route53_record" "validation" {
 }
 
 resource "aws_acm_certificate_validation" "default" {
-  count                   = local.certificate_count
+  count = local.certificate_count
+
+  region                  = var.region
   certificate_arn         = local.certificate_arn
   validation_record_fqdns = [aws_route53_record.validation["create"].fqdn]
 }

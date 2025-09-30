@@ -1,5 +1,7 @@
 resource "aws_efs_file_system" "default" {
-  count          = var.enable_efs ? 1 : 0
+  count = var.enable_efs ? 1 : 0
+
+  region         = var.region
   encrypted      = true
   kms_key_id     = var.kms_key_id
   creation_token = local.efs_name
@@ -35,25 +37,33 @@ data "aws_iam_policy_document" "policy" {
 }
 
 resource "aws_efs_file_system_policy" "policy" {
-  count          = var.enable_efs ? 1 : 0
+  count = var.enable_efs ? 1 : 0
+
+  region         = var.region
   file_system_id = aws_efs_file_system.default[0].id
   policy         = data.aws_iam_policy_document.policy[0].json
 }
 
 resource "aws_efs_mount_target" "mount" {
-  count           = var.enable_efs ? length(var.ecs_subnet_ids) : 0
+  count = var.enable_efs ? length(var.ecs_subnet_ids) : 0
+
+  region          = var.region
   file_system_id  = aws_efs_file_system.default[0].id
   subnet_id       = var.ecs_subnet_ids[count.index]
   security_groups = [aws_security_group.allow_efs_mount[0].id]
 }
 
 resource "aws_efs_access_point" "default" {
-  count          = var.enable_efs ? 1 : 0
+  count = var.enable_efs ? 1 : 0
+
+  region         = var.region
   file_system_id = aws_efs_file_system.default[0].id
+
   posix_user {
     gid = var.efs_posix_user
     uid = var.efs_posix_group
   }
+
   root_directory {
     creation_info {
       owner_gid   = var.efs_posix_user
@@ -68,7 +78,9 @@ resource "aws_efs_access_point" "default" {
 }
 
 resource "aws_security_group" "allow_efs_mount" {
-  count       = var.enable_efs ? 1 : 0
+  count = var.enable_efs ? 1 : 0
+
+  region      = var.region
   name        = "${var.name}-efs-transit-encryption"
   description = "Allow mounting for EFS volume"
   vpc_id      = var.vpc_id
@@ -93,6 +105,7 @@ resource "aws_security_group" "allow_efs_mount" {
 resource "aws_efs_backup_policy" "default" {
   count = var.enable_efs ? 1 : 0
 
+  region         = var.region
   file_system_id = aws_efs_file_system.default[0].id
 
   backup_policy {
