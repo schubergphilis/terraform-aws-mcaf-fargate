@@ -14,7 +14,9 @@ locals {
 
 resource "aws_security_group" "lb" {
   #checkov:skip=CKV2_AWS_5: False positive finding, the security group is attached.
-  count       = var.protocol != "TCP" ? local.load_balancer_count : 0
+  count = var.protocol != "TCP" ? local.load_balancer_count : 0
+
+  region      = var.region
   name        = "${var.name}-lb"
   description = "Controls access to the LB"
   vpc_id      = var.vpc_id
@@ -51,13 +53,16 @@ resource "aws_eip" "lb" {
   #checkov:skip=CKV2_AWS_19:IP's can also be used for non-EC2 resources
   count = length(local.eip_subnets)
 
+  region = var.region
   domain = "vpc"
   tags   = var.tags
 }
 
 resource "aws_lb" "default" {
   #checkov:skip=CKV2_AWS_28:WAF not implemnted (yet)
-  count                            = local.load_balancer_count
+  count = local.load_balancer_count
+
+  region                           = var.region
   name                             = var.name
   drop_invalid_header_fields       = var.protocol != "TCP" ? true : null
   internal                         = var.load_balancer_internal #tfsec:ignore:AWS005
@@ -96,7 +101,9 @@ resource "aws_lb" "default" {
 }
 
 resource "aws_lb_listener" "http" {
-  count             = var.protocol == "TCP" ? 0 : local.load_balancer_count
+  count = var.protocol == "TCP" ? 0 : local.load_balancer_count
+
+  region            = var.region
   load_balancer_arn = aws_lb.default[0].id
   port              = 80
   protocol          = "HTTP"
@@ -115,7 +122,9 @@ resource "aws_lb_listener" "http" {
 }
 
 resource "aws_lb_target_group" "default" {
-  count                = local.load_balancer_count
+  count = local.load_balancer_count
+
+  region               = var.region
   name                 = var.name
   deregistration_delay = var.load_balancer_deregistration_delay
   port                 = var.port
@@ -141,7 +150,9 @@ resource "aws_lb_target_group" "default" {
 }
 
 resource "aws_lb_listener" "https" {
-  count             = var.protocol == "TCP" ? 0 : local.load_balancer_count
+  count = var.protocol == "TCP" ? 0 : local.load_balancer_count
+
+  region            = var.region
   load_balancer_arn = aws_lb.default[0].id
   port              = 443
   protocol          = "HTTPS"
@@ -156,7 +167,9 @@ resource "aws_lb_listener" "https" {
 }
 
 resource "aws_lb_listener" "tcp" {
-  count             = var.protocol == "TCP" ? 1 : 0
+  count = var.protocol == "TCP" ? 1 : 0
+
+  region            = var.region
   load_balancer_arn = aws_lb.default[0].id
   port              = var.port
   protocol          = "TCP"

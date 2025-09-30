@@ -1,6 +1,5 @@
 locals {
   load_balancer = var.load_balancer_subnet_ids != null ? { create : true } : null
-  region        = var.region != null ? var.region : data.aws_region.current.name
 
   environment = [
     for k, v in var.environment :
@@ -45,7 +44,7 @@ locals {
       logDriver = "awslogs"
       options = {
         awslogs-group         = aws_cloudwatch_log_group.default.name
-        awslogs-region        = local.region
+        awslogs-region        = data.aws_region.current.region
         awslogs-stream-prefix = "ecs"
       }
     }
@@ -58,7 +57,9 @@ locals {
   }
 }
 
-data "aws_region" "current" {}
+data "aws_region" "current" {
+  region = var.region
+}
 
 module "task_execution_role" {
   source  = "schubergphilis/mcaf-role/aws"
@@ -80,6 +81,7 @@ resource "aws_iam_role_policy_attachment" "task_execution_role" {
 }
 
 resource "aws_cloudwatch_log_group" "default" {
+  region            = var.region
   name              = "/ecs/${var.name}"
   retention_in_days = var.log_retention_days
   kms_key_id        = var.kms_key_id
@@ -88,6 +90,7 @@ resource "aws_cloudwatch_log_group" "default" {
 
 resource "aws_ecs_task_definition" "default" {
   #checkov:skip=CKV_AWS_249:We argue its not necessary to split up task_role_arn & execution_role_arn since in this case it's not adding much security or maintainability benefits
+  region                   = var.region
   family                   = var.name
   execution_role_arn       = module.task_execution_role.arn
   task_role_arn            = module.task_execution_role.arn
@@ -124,6 +127,7 @@ resource "aws_ecs_task_definition" "default" {
 
 resource "aws_security_group" "ecs" {
   #checkov:skip=CKV_AWS_382: No problem with outgoing traffic to the internet
+  region      = var.region
   name        = "${var.name}-ecs"
   description = "Allow access to and from the ECS cluster"
   vpc_id      = var.vpc_id
@@ -157,8 +161,9 @@ resource "aws_security_group" "ecs" {
 }
 
 resource "aws_ecs_cluster" "default" {
-  name = var.name
-  tags = var.tags
+  region = var.region
+  name   = var.name
+  tags   = var.tags
 
   setting {
     name  = "containerInsights"
@@ -168,7 +173,9 @@ resource "aws_ecs_cluster" "default" {
 
 resource "aws_ecs_capacity_provider" "default" {
   count = var.capacity_provider_asg_arn != null ? 1 : 0
-  name  = "${var.name}-capacity-provider"
+
+  region = var.region
+  name   = "${var.name}-capacity-provider"
 
   auto_scaling_group_provider {
     auto_scaling_group_arn         = var.capacity_provider_asg_arn
@@ -183,7 +190,9 @@ resource "aws_ecs_capacity_provider" "default" {
 }
 
 resource "aws_ecs_cluster_capacity_providers" "default" {
-  count              = var.capacity_provider_asg_arn != null ? 1 : 0
+  count = var.capacity_provider_asg_arn != null ? 1 : 0
+
+  region             = var.region
   capacity_providers = [aws_ecs_capacity_provider.default[*].name]
   cluster_name       = aws_ecs_cluster.default.name
 
@@ -195,7 +204,9 @@ resource "aws_ecs_cluster_capacity_providers" "default" {
 }
 
 resource "aws_ecs_service" "default" {
-  name                              = var.name
+  name = var.name
+
+  region                            = var.region
   cluster                           = aws_ecs_cluster.default.id
   task_definition                   = aws_ecs_task_definition.default.arn
   desired_count                     = var.desired_count

@@ -248,7 +248,7 @@ variable "readonly_root_filesystem" {
 variable "region" {
   type        = string
   default     = null
-  description = "The region this fargate cluster should reside in, defaults to the region used by the callee"
+  description = "The AWS region where resources will be created; if omitted the default provider region is used"
 }
 
 variable "role_policy" {
