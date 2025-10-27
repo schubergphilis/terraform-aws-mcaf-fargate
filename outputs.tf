@@ -28,6 +28,11 @@ output "https_listener_arn" {
   description = "The ARN of the HTTPS listener"
 }
 
+output "load_balancer_arn" {
+  value       = try(aws_lb.default[0].arn, null)
+  description = "The ARN of the load balancer"
+}
+
 output "load_balancer_eips" {
   value       = try(aws_eip.lb[*].public_ip, null)
   description = "The Elastic IPs of the load balancer"

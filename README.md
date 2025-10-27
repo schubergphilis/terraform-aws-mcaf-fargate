@@ -117,6 +117,7 @@ IMPORTANT: We do not pin modules to versions in our examples. We highly recommen
 | <a name="output_hostname"></a> [hostname](#output\_hostname) | Hostname of the Application load balancer |
 | <a name="output_http_listener_arn"></a> [http\_listener\_arn](#output\_http\_listener\_arn) | The ARN of the HTTP listener |
 | <a name="output_https_listener_arn"></a> [https\_listener\_arn](#output\_https\_listener\_arn) | The ARN of the HTTPS listener |
+| <a name="output_load_balancer_arn"></a> [load\_balancer\_arn](#output\_load\_balancer\_arn) | The ARN of the load balancer |
 | <a name="output_load_balancer_eips"></a> [load\_balancer\_eips](#output\_load\_balancer\_eips) | The Elastic IPs of the load balancer |
 | <a name="output_name"></a> [name](#output\_name) | Name of the fargate deployment |
 | <a name="output_security_group_id"></a> [security\_group\_id](#output\_security\_group\_id) | Security group ID of the ECS task |
