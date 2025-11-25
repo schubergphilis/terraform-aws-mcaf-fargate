@@ -208,6 +208,7 @@ resource "aws_ecs_service" "default" {
 
   region                            = var.region
   cluster                           = aws_ecs_cluster.default.id
+  enable_execute_command            = var.enable_execute_command
   task_definition                   = aws_ecs_task_definition.default.arn
   desired_count                     = var.desired_count
   launch_type                       = var.service_launch_type

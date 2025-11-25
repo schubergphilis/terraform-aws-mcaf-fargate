@@ -49,6 +49,17 @@ variable "ecs_subnet_ids" {
   description = "List of subnet IDs assigned to ECS cluster"
 }
 
+variable "enable_execute_command" {
+  type        = bool
+  default     = false
+  description = "Enable ECS Exec for the service"
+
+  validation {
+    condition     = !var.enable_execute_command || !var.readonly_root_filesystem
+    error_message = "readonly_root_filesystem must be false when enable_execute_command is true"
+  }
+}
+
 variable "enable_efs" {
   type        = bool
   default     = false
