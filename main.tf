@@ -284,9 +284,9 @@ resource "aws_appautoscaling_scheduled_action" "scale_down_tfc_agents" {
   count = var.agent_count != null ? 1 : 0
 
   name               = "scale-down-${var.name}"
-  service_namespace  = aws_appautoscaling_target.ecs_target.service_namespace
-  resource_id        = aws_appautoscaling_target.ecs_target.resource_id
-  scalable_dimension = aws_appautoscaling_target.ecs_target.scalable_dimension
+  service_namespace  = aws_appautoscaling_target.ecs_target[0].service_namespace
+  resource_id        = aws_appautoscaling_target.ecs_target[0].resource_id
+  scalable_dimension = aws_appautoscaling_target.ecs_target[0].scalable_dimension
   schedule           = var.scale_down_cron
   timezone           = var.ecs_scaling_actions_timezone
 
@@ -301,9 +301,9 @@ resource "aws_appautoscaling_scheduled_action" "scale_up_tfc_agents" {
   count = var.agent_count != null ? 1 : 0
 
   name               = "scale-up-${var.name}"
-  service_namespace  = aws_appautoscaling_target.ecs_target.service_namespace
-  resource_id        = aws_appautoscaling_target.ecs_target.resource_id
-  scalable_dimension = aws_appautoscaling_target.ecs_target.scalable_dimension
+  service_namespace  = aws_appautoscaling_target.ecs_target[0].service_namespace
+  resource_id        = aws_appautoscaling_target.ecs_target[0].resource_id
+  scalable_dimension = aws_appautoscaling_target.ecs_target[0].scalable_dimension
   schedule           = var.scale_up_cron
   timezone           = var.ecs_scaling_actions_timezone
 
