@@ -46,13 +46,13 @@ variable "desired_count" {
 
 variable "agent_count" {
   type        = number
-  default     = 1
+  default     = null
   description = "Desired number of docker containers to run during work hours if scheduled scaling is used"
 }
 
 variable "offhours_agent_count" {
   type        = number
-  default     = 1
+  default     = null
   description = "Desired number of docker containers to run during off hours if scheduled scaling is used"
 }
 
