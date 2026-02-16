@@ -70,7 +70,7 @@ IMPORTANT: We do not pin modules to versions in our examples. We highly recommen
 | <a name="input_name"></a> [name](#input\_name) | Name of the Fargate cluster | `string` | n/a | yes |
 | <a name="input_role_policy"></a> [role\_policy](#input\_role\_policy) | The Policy document for the role | `string` | n/a | yes |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | AWS vpc id | `string` | n/a | yes |
-| <a name="input_agent_count"></a> [agent\_count](#input\_agent\_count) | Desired number of docker containers to run during work hours if scheduled scaling is used | `number` | `1` | no |
+| <a name="input_agent_count"></a> [agent\_count](#input\_agent\_count) | Desired number of docker containers to run during work hours if scheduled scaling is used | `number` | `null` | no |
 | <a name="input_architecture"></a> [architecture](#input\_architecture) | Instruction set architecture of the Fargate instance | `string` | `"x86_64"` | no |
 | <a name="input_capacity_provider_asg_arn"></a> [capacity\_provider\_asg\_arn](#input\_capacity\_provider\_asg\_arn) | ARN of Autoscaling Group for capacity provider | `string` | `null` | no |
 | <a name="input_certificate_arn"></a> [certificate\_arn](#input\_certificate\_arn) | Certificate ARN for the LB Listener | `string` | `null` | no |
@@ -99,7 +99,7 @@ IMPORTANT: We do not pin modules to versions in our examples. We highly recommen
 | <a name="input_load_balancer_subnet_ids"></a> [load\_balancer\_subnet\_ids](#input\_load\_balancer\_subnet\_ids) | List of subnet IDs assigned to the LB | `list(string)` | `null` | no |
 | <a name="input_log_retention_days"></a> [log\_retention\_days](#input\_log\_retention\_days) | The cloudwatch log group retention in days | `number` | `365` | no |
 | <a name="input_memory"></a> [memory](#input\_memory) | Fargate instance memory to provision (in MiB) | `number` | `2048` | no |
-| <a name="input_offhours_agent_count"></a> [offhours\_agent\_count](#input\_offhours\_agent\_count) | Desired number of docker containers to run during off hours if scheduled scaling is used | `number` | `1` | no |
+| <a name="input_offhours_agent_count"></a> [offhours\_agent\_count](#input\_offhours\_agent\_count) | Desired number of docker containers to run during off hours if scheduled scaling is used | `number` | `null` | no |
 | <a name="input_operating_system_family"></a> [operating\_system\_family](#input\_operating\_system\_family) | The operating system family of the Fargate instance | `string` | `"LINUX"` | no |
 | <a name="input_permissions_boundary"></a> [permissions\_boundary](#input\_permissions\_boundary) | The permissions boundary to set to TaskExecutionRole | `string` | `null` | no |
 | <a name="input_port"></a> [port](#input\_port) | Port exposed by the docker image to redirect traffic to | `number` | `3000` | no |
