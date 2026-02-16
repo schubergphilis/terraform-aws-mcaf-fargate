@@ -234,7 +234,7 @@ resource "aws_ecs_service" "default" {
 }
 
 resource "aws_ecs_service" "scaling" {
-  count = var.offhours_agent_count != null ? 1 : 0
+  count = var.agent_count != null ? 1 : 0
   name  = var.name
 
   region                            = var.region
