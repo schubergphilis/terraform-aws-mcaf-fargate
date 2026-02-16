@@ -40,7 +40,7 @@ variable "cpu" {
 
 variable "desired_count" {
   type        = number
-  default     = 1
+  default     = null
   description = "Desired number of docker containers to run"
 }
 
