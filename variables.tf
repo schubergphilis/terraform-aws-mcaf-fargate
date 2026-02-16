@@ -44,6 +44,36 @@ variable "desired_count" {
   description = "Desired number of docker containers to run"
 }
 
+variable "agent_count" {
+  type        = number
+  default     = 1
+  description = "Desired number of docker containers to run during work hours if scheduled scaling is used"
+}
+
+variable "offhours_agent_count" {
+  type        = number
+  default     = 1
+  description = "Desired number of docker containers to run during off hours if scheduled scaling is used"
+}
+
+variable "scale_up_cron" {
+  type        = string
+  default     = "cron(0 6 ? * MON-FRI *)" # 6 AM every weekday
+  description = "Cron for scale up scheduled action"
+}
+
+variable "scale_down_cron" {
+  type        = string
+  default     = "cron(0 20 * * ? *)" # 8 PM every day
+  description = "Cron for scale down scheduled action"
+}
+
+variable "ecs_scaling_actions_timezone" {
+  type        = string
+  default     = "Europe/Amsterdam"
+  description = "ECS scaling actions timezone"
+}
+
 variable "ecs_subnet_ids" {
   type        = list(string)
   description = "List of subnet IDs assigned to ECS cluster"
