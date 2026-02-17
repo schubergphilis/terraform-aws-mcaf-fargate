@@ -234,14 +234,14 @@ resource "aws_ecs_service" "default" {
 }
 
 resource "aws_ecs_service" "scaling" {
-  count = var.agent_count != null ? 1 : 0
+  count = var.scale_up_action != null ? 1 : 0
   name  = var.name
 
   region                            = var.region
   cluster                           = aws_ecs_cluster.default.id
   enable_execute_command            = var.enable_execute_command
   task_definition                   = aws_ecs_task_definition.default.arn
-  desired_count                     = var.agent_count
+  desired_count                     = var.scale_up_action.max_capacity
   launch_type                       = var.service_launch_type
   propagate_tags                    = "TASK_DEFINITION"
   health_check_grace_period_seconds = var.health_check_grace_period_seconds
@@ -267,10 +267,10 @@ resource "aws_ecs_service" "scaling" {
 }
 
 resource "aws_appautoscaling_target" "ecs_target" {
-  count = var.agent_count != null ? 1 : 0
+  count = var.scale_up_action != null ? 1 : 0
 
-  max_capacity       = var.agent_count
-  min_capacity       = var.agent_count
+  max_capacity       = var.scale_up_action.max_capacity
+  min_capacity       = var.scale_up_action.min_capacity
   resource_id        = "service/${var.name}/${var.name}"
   scalable_dimension = "ecs:service:DesiredCount"
   service_namespace  = "ecs"
@@ -281,7 +281,7 @@ resource "aws_appautoscaling_target" "ecs_target" {
 
 # Scale down to 2 agents at 8PM
 resource "aws_appautoscaling_scheduled_action" "scale_down_tfc_agents" {
-  count = var.agent_count != null ? 1 : 0
+  count = var.scale_down_action != null ? 1 : 0
 
   name               = "scale-down-${var.name}"
   service_namespace  = aws_appautoscaling_target.ecs_target[0].service_namespace
@@ -291,14 +291,14 @@ resource "aws_appautoscaling_scheduled_action" "scale_down_tfc_agents" {
   timezone           = var.ecs_scaling_actions_timezone
 
   scalable_target_action {
-    min_capacity = var.offhours_agent_count
-    max_capacity = var.offhours_agent_count
+    min_capacity = var.scale_down_action.min_capacity
+    max_capacity = var.scale_down_action.max_capacity
   }
 }
 
 # Scale up to 25 agents at 6AM
 resource "aws_appautoscaling_scheduled_action" "scale_up_tfc_agents" {
-  count = var.agent_count != null ? 1 : 0
+  count = var.scale_up_action != null ? 1 : 0
 
   name               = "scale-up-${var.name}"
   service_namespace  = aws_appautoscaling_target.ecs_target[0].service_namespace
@@ -308,7 +308,7 @@ resource "aws_appautoscaling_scheduled_action" "scale_up_tfc_agents" {
   timezone           = var.ecs_scaling_actions_timezone
 
   scalable_target_action {
-    min_capacity = var.agent_count
-    max_capacity = var.agent_count
+    min_capacity = var.scale_up_action.min_capacity
+    max_capacity = var.scale_up_action.max_capacity
   }
 }

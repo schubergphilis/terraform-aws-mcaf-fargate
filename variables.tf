@@ -8,6 +8,7 @@ variable "architecture" {
     error_message = "Allowed values are \"arm64\" or \"x86_64\"."
   }
 }
+
 variable "capacity_provider_asg_arn" {
   type        = string
   default     = null
@@ -42,30 +43,6 @@ variable "desired_count" {
   type        = number
   default     = null
   description = "Desired number of docker containers to run"
-}
-
-variable "agent_count" {
-  type        = number
-  default     = null
-  description = "Desired number of docker containers to run during work hours if scheduled scaling is used"
-}
-
-variable "offhours_agent_count" {
-  type        = number
-  default     = null
-  description = "Desired number of docker containers to run during off hours if scheduled scaling is used"
-}
-
-variable "scale_up_cron" {
-  type        = string
-  default     = "cron(0 6 ? * MON-FRI *)" # 6 AM every weekday
-  description = "Cron for scale up scheduled action"
-}
-
-variable "scale_down_cron" {
-  type        = string
-  default     = "cron(0 20 * * ? *)" # 8 PM every day
-  description = "Cron for scale down scheduled action"
 }
 
 variable "ecs_scaling_actions_timezone" {
@@ -295,6 +272,36 @@ variable "region" {
 variable "role_policy" {
   type        = string
   description = "The Policy document for the role"
+}
+
+variable "scale_up_action" {
+  type = object({
+    min_capacity = number
+    max_capacity = number
+  })
+  default     = null
+  description = "Desired number of docker containers to run during work hours if scheduled scaling is used"
+}
+
+variable "scale_down_action" {
+  type = object({
+    min_capacity = number
+    max_capacity = number
+  })
+  default     = null
+  description = "Desired number of docker containers to run during off hours if scheduled scaling is used"
+}
+
+variable "scale_up_cron" {
+  type        = string
+  default     = "cron(0 6 ? * MON-FRI *)" # 6 AM every weekday
+  description = "Cron for scale up scheduled action"
+}
+
+variable "scale_down_cron" {
+  type        = string
+  default     = "cron(0 20 * * ? *)" # 8 PM every day
+  description = "Cron for scale down scheduled action"
 }
 
 variable "secrets" {
