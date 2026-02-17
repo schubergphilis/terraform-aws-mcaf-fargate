@@ -274,6 +274,7 @@ resource "aws_appautoscaling_target" "ecs_target" {
   resource_id        = "service/${var.name}/${var.name}"
   scalable_dimension = "ecs:service:DesiredCount"
   service_namespace  = "ecs"
+
   lifecycle {
     ignore_changes = [max_capacity, min_capacity]
   }
