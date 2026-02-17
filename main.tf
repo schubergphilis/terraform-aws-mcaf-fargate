@@ -261,6 +261,7 @@ resource "aws_ecs_service" "scaling" {
       container_port   = var.port
     }
   }
+
   lifecycle {
     ignore_changes = [desired_count]
   }
@@ -282,7 +283,7 @@ resource "aws_appautoscaling_target" "ecs_target" {
 
 # Scale down to 2 agents at 8PM
 resource "aws_appautoscaling_scheduled_action" "scale_down_tfc_agents" {
-  count = var.scale_down_action != null ? 1 : 0
+  count = var.scale_up_action != null ? 1 : 0
 
   name               = "scale-down-${var.name}"
   service_namespace  = aws_appautoscaling_target.ecs_target[0].service_namespace

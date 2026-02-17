@@ -43,6 +43,11 @@ variable "desired_count" {
   type        = number
   default     = null
   description = "Desired number of docker containers to run"
+
+  validation {
+    condition     = var.desired_count != null || var.scale_up_action != null
+    error_message = "At least one of desired_count or scale_up_action must be provided."
+  }
 }
 
 variable "ecs_scaling_actions_timezone" {
