@@ -70,7 +70,6 @@ IMPORTANT: We do not pin modules to versions in our examples. We highly recommen
 | <a name="input_name"></a> [name](#input\_name) | Name of the Fargate cluster | `string` | n/a | yes |
 | <a name="input_role_policy"></a> [role\_policy](#input\_role\_policy) | The Policy document for the role | `string` | n/a | yes |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | AWS vpc id | `string` | n/a | yes |
-| <a name="input_agent_count"></a> [agent\_count](#input\_agent\_count) | Desired number of docker containers to run during work hours if scheduled scaling is used | `number` | `null` | no |
 | <a name="input_architecture"></a> [architecture](#input\_architecture) | Instruction set architecture of the Fargate instance | `string` | `"x86_64"` | no |
 | <a name="input_capacity_provider_asg_arn"></a> [capacity\_provider\_asg\_arn](#input\_capacity\_provider\_asg\_arn) | ARN of Autoscaling Group for capacity provider | `string` | `null` | no |
 | <a name="input_certificate_arn"></a> [certificate\_arn](#input\_certificate\_arn) | Certificate ARN for the LB Listener | `string` | `null` | no |
@@ -99,7 +98,6 @@ IMPORTANT: We do not pin modules to versions in our examples. We highly recommen
 | <a name="input_load_balancer_subnet_ids"></a> [load\_balancer\_subnet\_ids](#input\_load\_balancer\_subnet\_ids) | List of subnet IDs assigned to the LB | `list(string)` | `null` | no |
 | <a name="input_log_retention_days"></a> [log\_retention\_days](#input\_log\_retention\_days) | The cloudwatch log group retention in days | `number` | `365` | no |
 | <a name="input_memory"></a> [memory](#input\_memory) | Fargate instance memory to provision (in MiB) | `number` | `2048` | no |
-| <a name="input_offhours_agent_count"></a> [offhours\_agent\_count](#input\_offhours\_agent\_count) | Desired number of docker containers to run during off hours if scheduled scaling is used | `number` | `null` | no |
 | <a name="input_operating_system_family"></a> [operating\_system\_family](#input\_operating\_system\_family) | The operating system family of the Fargate instance | `string` | `"LINUX"` | no |
 | <a name="input_permissions_boundary"></a> [permissions\_boundary](#input\_permissions\_boundary) | The permissions boundary to set to TaskExecutionRole | `string` | `null` | no |
 | <a name="input_port"></a> [port](#input\_port) | Port exposed by the docker image to redirect traffic to | `number` | `3000` | no |
@@ -108,7 +106,9 @@ IMPORTANT: We do not pin modules to versions in our examples. We highly recommen
 | <a name="input_public_ip"></a> [public\_ip](#input\_public\_ip) | Assign a public ip to the service | `bool` | `false` | no |
 | <a name="input_readonly_root_filesystem"></a> [readonly\_root\_filesystem](#input\_readonly\_root\_filesystem) | When this parameter is true, the container is given read-only access to its root file system | `bool` | `true` | no |
 | <a name="input_region"></a> [region](#input\_region) | The AWS region where resources will be created; if omitted the default provider region is used | `string` | `null` | no |
+| <a name="input_scale_down_action"></a> [scale\_down\_action](#input\_scale\_down\_action) | Desired number of docker containers to run during off hours if scheduled scaling is used | <pre>object({<br/>    min_capacity = number<br/>    max_capacity = number<br/>  })</pre> | `null` | no |
 | <a name="input_scale_down_cron"></a> [scale\_down\_cron](#input\_scale\_down\_cron) | Cron for scale down scheduled action | `string` | `"cron(0 20 * * ? *)"` | no |
+| <a name="input_scale_up_action"></a> [scale\_up\_action](#input\_scale\_up\_action) | Desired number of docker containers to run during work hours if scheduled scaling is used | <pre>object({<br/>    min_capacity = number<br/>    max_capacity = number<br/>  })</pre> | `null` | no |
 | <a name="input_scale_up_cron"></a> [scale\_up\_cron](#input\_scale\_up\_cron) | Cron for scale up scheduled action | `string` | `"cron(0 6 ? * MON-FRI *)"` | no |
 | <a name="input_secrets"></a> [secrets](#input\_secrets) | Map containing secrets to expose to the docker container | `map(string)` | `{}` | no |
 | <a name="input_service_launch_type"></a> [service\_launch\_type](#input\_service\_launch\_type) | The service launch type: either FARGATE or EC2 | `string` | `"FARGATE"` | no |
