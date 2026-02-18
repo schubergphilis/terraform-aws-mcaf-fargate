@@ -14,6 +14,7 @@ locals {
 
 resource "aws_security_group" "lb" {
   #checkov:skip=CKV2_AWS_5: False positive finding, the security group is attached.
+  #checkov:skip=CKV_AWS_382: No problem with outgoing traffic to the internet
   count = var.protocol != "TCP" ? local.load_balancer_count : 0
 
   region      = var.region
