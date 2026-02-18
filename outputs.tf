@@ -64,6 +64,9 @@ output "tcp_listener_arn" {
 }
 
 output "ecs_service_arn" {
-  value       = aws_ecs_service.default.id
+  value = try(
+    aws_ecs_service.default[0].id,
+    aws_ecs_service.scaling[0].id
+  )
   description = "The ARN of the ECS service"
 }

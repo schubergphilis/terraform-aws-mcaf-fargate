@@ -30,11 +30,15 @@ IMPORTANT: We do not pin modules to versions in our examples. We highly recommen
 |------|------|
 | [aws_acm_certificate.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/acm_certificate) | resource |
 | [aws_acm_certificate_validation.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/acm_certificate_validation) | resource |
+| [aws_appautoscaling_scheduled_action.scale_down_tfc_agents](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/appautoscaling_scheduled_action) | resource |
+| [aws_appautoscaling_scheduled_action.scale_up_tfc_agents](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/appautoscaling_scheduled_action) | resource |
+| [aws_appautoscaling_target.ecs_target](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/appautoscaling_target) | resource |
 | [aws_cloudwatch_log_group.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
 | [aws_ecs_capacity_provider.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_capacity_provider) | resource |
 | [aws_ecs_cluster.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_cluster) | resource |
 | [aws_ecs_cluster_capacity_providers.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_cluster_capacity_providers) | resource |
 | [aws_ecs_service.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_service) | resource |
+| [aws_ecs_service.scaling](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_service) | resource |
 | [aws_ecs_task_definition.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_task_definition) | resource |
 | [aws_efs_access_point.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/efs_access_point) | resource |
 | [aws_efs_backup_policy.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/efs_backup_policy) | resource |
@@ -72,7 +76,8 @@ IMPORTANT: We do not pin modules to versions in our examples. We highly recommen
 | <a name="input_cidr_blocks"></a> [cidr\_blocks](#input\_cidr\_blocks) | CIDR block to allow access to the LB | `list(string)` | <pre>[<br/>  "0.0.0.0/0"<br/>]</pre> | no |
 | <a name="input_command"></a> [command](#input\_command) | The command to execute inside the container | `list(string)` | `[]` | no |
 | <a name="input_cpu"></a> [cpu](#input\_cpu) | Fargate instance CPU units to provision (1 vCPU = 1024 CPU units) | `number` | `1024` | no |
-| <a name="input_desired_count"></a> [desired\_count](#input\_desired\_count) | Desired number of docker containers to run | `number` | `1` | no |
+| <a name="input_desired_count"></a> [desired\_count](#input\_desired\_count) | Desired number of docker containers to run | `number` | `null` | no |
+| <a name="input_ecs_scaling_actions_timezone"></a> [ecs\_scaling\_actions\_timezone](#input\_ecs\_scaling\_actions\_timezone) | ECS scaling actions timezone | `string` | `"Europe/Amsterdam"` | no |
 | <a name="input_efs_mount_points"></a> [efs\_mount\_points](#input\_efs\_mount\_points) | The mount points for data volumes in your container. This parameter maps to Volumes in the --volume option to docker run | <pre>list(object({<br/>    containerPath = string<br/>  }))</pre> | `[]` | no |
 | <a name="input_efs_posix_group"></a> [efs\_posix\_group](#input\_efs\_posix\_group) | Posix gid needs to be mapped at EFS Access Point | `number` | `1000` | no |
 | <a name="input_efs_posix_user"></a> [efs\_posix\_user](#input\_efs\_posix\_user) | Posix uid needs to be mapped at EFS Access Point | `number` | `1000` | no |
@@ -101,6 +106,10 @@ IMPORTANT: We do not pin modules to versions in our examples. We highly recommen
 | <a name="input_public_ip"></a> [public\_ip](#input\_public\_ip) | Assign a public ip to the service | `bool` | `false` | no |
 | <a name="input_readonly_root_filesystem"></a> [readonly\_root\_filesystem](#input\_readonly\_root\_filesystem) | When this parameter is true, the container is given read-only access to its root file system | `bool` | `true` | no |
 | <a name="input_region"></a> [region](#input\_region) | The AWS region where resources will be created; if omitted the default provider region is used | `string` | `null` | no |
+| <a name="input_scale_down_action"></a> [scale\_down\_action](#input\_scale\_down\_action) | Desired number of docker containers to run during off hours if scheduled scaling is used | <pre>object({<br/>    min_capacity = number<br/>    max_capacity = number<br/>  })</pre> | `null` | no |
+| <a name="input_scale_down_cron"></a> [scale\_down\_cron](#input\_scale\_down\_cron) | Cron for scale down scheduled action | `string` | `"cron(0 20 * * ? *)"` | no |
+| <a name="input_scale_up_action"></a> [scale\_up\_action](#input\_scale\_up\_action) | Desired number of docker containers to run during work hours if scheduled scaling is used | <pre>object({<br/>    min_capacity = number<br/>    max_capacity = number<br/>  })</pre> | `null` | no |
+| <a name="input_scale_up_cron"></a> [scale\_up\_cron](#input\_scale\_up\_cron) | Cron for scale up scheduled action | `string` | `"cron(0 6 ? * MON-FRI *)"` | no |
 | <a name="input_secrets"></a> [secrets](#input\_secrets) | Map containing secrets to expose to the docker container | `map(string)` | `{}` | no |
 | <a name="input_service_launch_type"></a> [service\_launch\_type](#input\_service\_launch\_type) | The service launch type: either FARGATE or EC2 | `string` | `"FARGATE"` | no |
 | <a name="input_ssl_policy"></a> [ssl\_policy](#input\_ssl\_policy) | SSL Policy for the LB Listener | `string` | `"ELBSecurityPolicy-TLS13-1-2-2021-06"` | no |

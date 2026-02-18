@@ -2,6 +2,12 @@
 
 This document captures required refactoring on your part when upgrading to a module version that contains breaking changes.
 
+## Upgrading to v3.0.0
+
+### Key Changes
+
+- This module now supports scheduled scaling actions for ECS. The default for the `desired_count` has changed to `null` to support this. Validation was added to ensure `desired_count` and `scale_up_action` are not both null.
+
 ## Upgrading to v2.0.0
 
 ### Key Changes
