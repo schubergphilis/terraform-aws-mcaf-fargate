@@ -36,6 +36,7 @@ locals {
     cpu                    = var.cpu
     memory                 = var.memory
     environment            = local.environment
+    user                   = var.container_user
     entryPoint             = length(var.entrypoint) > 0 ? var.entrypoint : null
     secrets                = local.secrets
     readonlyRootFilesystem = var.readonly_root_filesystem

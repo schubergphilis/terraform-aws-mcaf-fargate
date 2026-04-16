@@ -75,6 +75,7 @@ IMPORTANT: We do not pin modules to versions in our examples. We highly recommen
 | <a name="input_certificate_arn"></a> [certificate\_arn](#input\_certificate\_arn) | Certificate ARN for the LB Listener | `string` | `null` | no |
 | <a name="input_cidr_blocks"></a> [cidr\_blocks](#input\_cidr\_blocks) | CIDR block to allow access to the LB | `list(string)` | <pre>[<br/>  "0.0.0.0/0"<br/>]</pre> | no |
 | <a name="input_command"></a> [command](#input\_command) | The command to execute inside the container | `list(string)` | `[]` | no |
+| <a name="input_container_user"></a> [container\_user](#input\_container\_user) | Optional user name (or UID) to run the container as | `string` | `null` | no |
 | <a name="input_cpu"></a> [cpu](#input\_cpu) | Fargate instance CPU units to provision (1 vCPU = 1024 CPU units) | `number` | `1024` | no |
 | <a name="input_desired_count"></a> [desired\_count](#input\_desired\_count) | Desired number of docker containers to run | `number` | `null` | no |
 | <a name="input_ecs_scaling_actions_timezone"></a> [ecs\_scaling\_actions\_timezone](#input\_ecs\_scaling\_actions\_timezone) | ECS scaling actions timezone | `string` | `"Europe/Amsterdam"` | no |

@@ -28,9 +28,10 @@ module "vpc" {
 }
 
 module "pets" {
-  source                   = "../.."
-  name                     = "fargate"
-  image                    = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${data.aws_region.current.name}.amazonaws.com/pets:latest"
+  source = "../.."
+  name   = "fargate"
+  image  = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${data.aws_region.current.id}.amazonaws.com/pets:latest"
+
   ecs_subnet_ids           = module.vpc.private_subnet_ids
   load_balancer_subnet_ids = module.vpc.public_subnet_ids
   protocol                 = "HTTP"

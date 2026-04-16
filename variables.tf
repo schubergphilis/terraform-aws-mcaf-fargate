@@ -33,6 +33,12 @@ variable "command" {
   description = "The command to execute inside the container"
 }
 
+variable "container_user" {
+  type        = string
+  default     = null
+  description = "Optional user name (or UID) to run the container as"
+}
+
 variable "cpu" {
   type        = number
   default     = 1024
