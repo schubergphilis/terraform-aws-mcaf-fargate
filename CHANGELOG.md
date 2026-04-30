@@ -5,6 +5,16 @@ All notable changes to this project will automatically be documented in this fil
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v3.1.1 - 2026-04-30
+
+### What's Changed
+
+#### 🐛 Bug Fixes
+
+* fix: revert validation record to count-based approach (#88) @thulasirajkomminar
+
+**Full Changelog**: https://github.com/schubergphilis/terraform-aws-mcaf-fargate/compare/v3.1.0...v3.1.1
+
 ## v3.1.0 - 2026-04-16
 
 ### What's Changed
