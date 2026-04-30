@@ -39,20 +39,12 @@ resource "aws_acm_certificate" "default" {
 }
 
 resource "aws_route53_record" "validation" {
-  for_each = {
-    for dvo in flatten([
-      for c in aws_acm_certificate.default : c.domain_validation_options
-      ]) : "create" => {
-      name   = dvo.resource_record_name
-      record = dvo.resource_record_value
-      type   = dvo.resource_record_type
-    }
-  }
+  count = local.certificate_count
 
-  name    = each.value.name
-  records = [each.value.record]
+  name    = tolist(aws_acm_certificate.default[0].domain_validation_options)[0].resource_record_name
+  records = [tolist(aws_acm_certificate.default[0].domain_validation_options)[0].resource_record_value]
   ttl     = 60
-  type    = each.value.type
+  type    = tolist(aws_acm_certificate.default[0].domain_validation_options)[0].resource_record_type
   zone_id = data.aws_route53_zone.current[0].zone_id
 }
 
@@ -61,5 +53,5 @@ resource "aws_acm_certificate_validation" "default" {
 
   region                  = var.region
   certificate_arn         = local.certificate_arn
-  validation_record_fqdns = [aws_route53_record.validation["create"].fqdn]
+  validation_record_fqdns = [for r in aws_route53_record.validation : r.fqdn]
 }
