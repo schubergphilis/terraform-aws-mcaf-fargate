@@ -42,7 +42,7 @@ locals {
     readonlyRootFilesystem = var.readonly_root_filesystem
     mountPoints            = local.updated_mount_points
     workingDirectory       = var.working_directory
-    
+
     logConfiguration = {
       logDriver = "awslogs"
       options = {
