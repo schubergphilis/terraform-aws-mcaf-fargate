@@ -368,3 +368,9 @@ variable "vpc_id" {
   type        = string
   description = "AWS vpc id"
 }
+
+variable "working_directory" {
+  type        = string
+  default     = null
+  description = "The working directory to run commands inside the container in"
+}
