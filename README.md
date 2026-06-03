@@ -117,6 +117,7 @@ IMPORTANT: We do not pin modules to versions in our examples. We highly recommen
 | <a name="input_subdomain"></a> [subdomain](#input\_subdomain) | The DNS subdomain and zone ID for the LB | <pre>object({<br/>    name    = string,<br/>    zone_id = string<br/>  })</pre> | `null` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | A mapping of tags to assign to the resources | `map(string)` | `{}` | no |
 | <a name="input_target_group_stickiness"></a> [target\_group\_stickiness](#input\_target\_group\_stickiness) | Whether to bind a client’s session to a specific instance within the target group | `bool` | `false` | no |
+| <a name="input_working_directory"></a> [working\_directory](#input\_working\_directory) | The working directory to run commands inside the container in | `string` | `null` | no |
 
 ## Outputs
 
