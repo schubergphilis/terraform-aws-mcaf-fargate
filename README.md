@@ -1,3 +1,9 @@
+<!-- migrate-repo:banner -->
+> [!IMPORTANT]
+> **This repository has moved to [`schubergphilis-ep/terraform-aws-mcaf-fargate`](https://github.com/schubergphilis-ep/terraform-aws-mcaf-fargate).**
+> Please update your references and use the new location for issues, PRs, and contributions.
+<!-- migrate-repo:banner -->
+
 # terraform-aws-mcaf-fargate
 
 Terraform module to create an ECS Fargate cluster with an Application Load Balancer and EFS volume (optional).
